@@ -1,5 +1,119 @@
 # Changelog
 
+## v1144 - First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review
+
+### Changes made
+- Added CEO Operating Portfolio Review as the next governed operating-execution room.
+- Added portfolio value, customer and market health, risk and resilience, product and AI, service and capacity, people, partners, and organization, capital and scenarios, CEO decision receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed local HTTP smoke checks for `/`, `app.min.js?v=1144.1`, and `styles.min.css?v=1144.1` with `200` responses.
+- Passed desktop visual QA at `1280x720`: Build Phase exposed v1144 plus the v1145-v1147 queue, Command preserved the v1142-v1144 continuity rail, the current executive strip remained readable, and no horizontal overflow or console errors appeared.
+- Passed mobile visual QA at `390x844` (375 px content width): Build Phase, the deferred build-badge route, Command, the current executive strip, queue continuity, and rail continuity passed without horizontal overflow or console errors.
+- Passed the physical executive-receipt copy interaction with visible confirmation in 839 ms on desktop and 1,122 ms on mobile, including the 250 ms observation pause.
+
+### Known risks
+- CEO portfolio guidance remains illustrative until verified production, customer, partner, accounting, workforce, legal, security, service, market, and financial evidence is reviewed by accountable executives.
+
+## v1143 - First Pilot Expansion Rollout Reuse Market Pilot Regulated Market Entry Council
+
+### Changes made
+- Added Regulated Market Entry Council as the next governed operating-execution room.
+- Added market and sector scope, entity and licensing, data and privacy, security and assurance, AI and model obligations, commercial and tax, operating readiness, entry approval receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The council is not legal or regulatory advice; real entry requires qualified local counsel, regulators where applicable, licensed entities, verified controls, contracts, tax, and production evidence.
+
+## v1142 - First Pilot Expansion Rollout Reuse Market Pilot Enterprise Value Realization Ledger
+
+### Changes made
+- Added Enterprise Value Realization Ledger as the next governed operating-execution room.
+- Added value promise baseline, workflow adoption, outcome acceptance, evidence and attribution, economic realization, renewal and expansion, correction and learning, realization receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Value realization remains illustrative until customer-approved baselines, production usage, outcome evidence, attribution methods, accounting treatment, and renewal data are connected.
+
+## v1141 - First Pilot Expansion Rollout Reuse Market Pilot Customer and Partner Risk Network
+
+### Changes made
+- Added Customer and Partner Risk Network as the next governed operating-execution room.
+- Added customer portfolio risk, partner dependency risk, concentration and contagion, service and delivery risk, trust and compliance risk, incident and recovery, risk response authority, network risk receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The network remains a prototype risk model until live customer, partner, contract, service, security, incident, financial, concentration, and recovery data are verified.
+
+## v1140 - First Pilot Expansion Rollout Reuse Market Pilot Global Operating Rhythm Command
+
+### Changes made
+- Added Global Operating Rhythm Command as the next governed operating-execution room.
+- Added daily control, weekly operating review, monthly portfolio review, quarterly strategy and risk, customer and partner rhythm, incident and recovery rhythm, board and audit rhythm, cadence receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Operating rhythms remain illustrative until real calendars, telemetry, decisions, accountable attendees, customer obligations, incident procedures, and evidence systems are connected.
+
 ## v1139 - First Pilot Expansion Rollout Reuse Market Pilot Global Operating Model Approval Council
 
 ### Changes made

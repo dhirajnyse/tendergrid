@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1139";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Global Operating Model Approval Council";
+  const BUILD_VERSION = "v1144";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1139.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1139.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1144.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1144.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -13102,6 +13102,201 @@
         ["Service and support model","supportGuard",0.96,10,"Onboarding, success, support, SLOs, incidents, communications, escalation, recovery, coverage, and capacity match promises."],
         ["Economics and investment","rollbackGuard",0.94,10,"Pricing, margin, cash, capacity, people, platform, trust, reliability, markets, scenarios, and stop thresholds align."],
         ["Operating approval receipt","guardClosure",0.98,10,"Signed receipt records model, authority, assumptions, boundaries, exceptions, investments, owners, expiry, and next council."],
+      ],
+    },
+    {
+      key: "global-operating-rhythm-command",
+      version: "v1140",
+      number: 1140,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Operating Rhythm Command",
+      shortLabel: "Global Operating Rhythm Command",
+      phase: "global operating rhythm command",
+      track: "v1140 global operating rhythm command",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-operating-rhythm-command",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-operating-rhythm-command",
+      idSuffix: "GLOBAL-OPERATING-RHYTHM-COMMAND",
+      scoreKey: "globalOperatingRhythmCommandScore",
+      decisionKey: "globalOperatingRhythmCommandDecision",
+      stateKey: "globalOperatingRhythmCommandState",
+      lineKey: "globalOperatingRhythmCommandLine",
+      primarySignal: "Pilot global operating rhythm command",
+      primaryNote: "Turns the approved operating model into daily, weekly, monthly, quarterly, customer, incident, board, audit, and signed cadence rhythms.",
+      summary: "Run the global operating model through daily, weekly, monthly, quarterly, customer, incident, board, audit, and signed cadence rhythms.",
+      trackSummary: "The approved operating model now becomes a working cadence where decisions, evidence, exceptions, customers, incidents, investments, and accountability move on time.",
+      stageSummary: "Global execution now has one operating rhythm from daily control through weekly review, monthly portfolio, quarterly strategy, customer, incident, board, audit, and receipt.",
+      openDecision: "Authorize operating rhythm",
+      guardedDecision: "Open guarded operating rhythm",
+      holdDecision: "Hold cadence activation",
+      repairDecision: "Repair cadence proof",
+      nextOpen: "Authorize the operating rhythm and keep daily, weekly, monthly, quarterly, customer, incident, board, audit, and receipt cadences together.",
+      nextGuarded: "Open a guarded rhythm while one bounded agenda, owner, evidence, escalation, customer, incident, or review condition stays watched.",
+      nextHold: "Hold cadence activation until meetings have clear purpose, inputs, decisions, owners, dates, evidence, escalation, and closure.",
+      nextRepair: "Repair cadence proof before recurring meetings, reports, escalations, customer promises, investments, or audit claims become routine.",
+      axes: [
+        ["Daily control","ownerCommand",0.96,10,"Priorities, service, customer movement, incidents, capacity, blockers, decisions, owners, dates, and closure stay readable."],
+        ["Weekly operating review","reviewGuard",0.96,10,"Outcomes, pipeline, delivery, reliability, support, risk, evidence, decisions, and follow-through share one agenda."],
+        ["Monthly portfolio review","sponsorGuard",0.94,10,"Customer health, value, economics, capacity, product, trust, people, partners, investment, and scenarios are reconciled."],
+        ["Quarterly strategy and risk","rollbackGuard",0.94,10,"Strategy, markets, portfolio choices, assumptions, risks, capital, capacity, stop rules, and accountable decisions align."],
+        ["Customer and partner rhythm","supportGuard",0.94,10,"Sponsors, outcomes, service, changes, risks, partners, escalations, renewal, expansion, and feedback have a cadence."],
+        ["Incident and recovery rhythm","rollbackGuard",0.98,10,"Detection, command, communication, containment, recovery, evidence, learning, correction, and verification are timed."],
+        ["Board and audit rhythm","proofGuard",0.96,10,"Board decisions, controls, evidence, exceptions, attestations, expiry, corrections, and retrieval follow approved windows."],
+        ["Cadence receipt","guardClosure",0.98,10,"Signed receipt records rhythm, purpose, inputs, decisions, owners, actions, evidence, exceptions, expiry, and next review."],
+      ],
+    },
+    {
+      key: "customer-and-partner-risk-network",
+      version: "v1141",
+      number: 1141,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer and Partner Risk Network",
+      shortLabel: "Customer and Partner Risk Network",
+      phase: "customer and partner risk network",
+      track: "v1141 customer and partner risk network",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-and-partner-risk-network",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-and-partner-risk-network",
+      idSuffix: "CUSTOMER-AND-PARTNER-RISK-NETWORK",
+      scoreKey: "customerAndPartnerRiskNetworkScore",
+      decisionKey: "customerAndPartnerRiskNetworkDecision",
+      stateKey: "customerAndPartnerRiskNetworkState",
+      lineKey: "customerAndPartnerRiskNetworkLine",
+      primarySignal: "Pilot customer and partner risk network",
+      primaryNote: "Connects customer, partner, concentration, dependency, service, trust, incident, recovery, response authority, and signed network-risk evidence.",
+      summary: "Govern connected customer and partner risk across concentration, dependencies, service, trust, incidents, recovery, authority, and signed receipt.",
+      trackSummary: "Operating cadence now feeds a connected risk network where customer exposure, partner dependencies, service impact, trust obligations, incidents, recovery, and authority stay visible together.",
+      stageSummary: "Connected customer and partner risk now has one network from portfolio exposure through dependencies, service, trust, incidents, recovery, authority, and receipt.",
+      openDecision: "Authorize network risk posture",
+      guardedDecision: "Open guarded network risk posture",
+      holdDecision: "Hold connected exposure",
+      repairDecision: "Repair network risk proof",
+      nextOpen: "Authorize the network risk posture and keep customers, partners, concentration, dependencies, service, trust, incidents, recovery, authority, and receipt together.",
+      nextGuarded: "Open a guarded posture while one contained customer, partner, dependency, service, trust, incident, recovery, or concentration condition stays watched.",
+      nextHold: "Hold connected exposure when concentration, dependency, service, trust, commercial, incident, recovery, or response authority is not controlled.",
+      nextRepair: "Repair network risk proof before customer commitments, partner access, service promises, concentration bets, recovery claims, or escalation decisions widen.",
+      axes: [
+        ["Customer portfolio risk","reviewGuard",0.94,10,"Value, adoption, service, delivery, sponsor, renewal, payment, concentration, complaints, and exit exposure are visible."],
+        ["Partner dependency risk","tenantGuard",0.94,10,"Capability, access, delivery, service, financial health, conduct, subcontractors, exit, replacement, and evidence are mapped."],
+        ["Concentration and contagion","sponsorGuard",0.94,10,"Revenue, sector, region, platform, supplier, data, integration, reputation, capacity, and correlated failure are measured."],
+        ["Service and delivery risk","supportGuard",0.96,10,"Availability, capacity, implementation, support, defects, changes, dependencies, commitments, impact, and recovery are controlled."],
+        ["Trust and compliance risk","proofGuard",0.96,10,"Security, privacy, data, AI, accessibility, contracts, regulation, evidence, exceptions, and expiry stay current."],
+        ["Incident and recovery","rollbackGuard",0.98,10,"Detection, affected network, command, communication, containment, fallback, recovery, correction, and learning are linked."],
+        ["Risk response authority","ownerCommand",0.98,10,"Accept, mitigate, transfer, stop, notify, escalate, remediate, verify, reopen, and close authorities are named."],
+        ["Network risk receipt","guardClosure",0.98,10,"Signed receipt records exposure, dependencies, controls, incidents, decisions, owners, evidence, expiry, and next review."],
+      ],
+    },
+    {
+      key: "enterprise-value-realization-ledger",
+      version: "v1142",
+      number: 1142,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Value Realization Ledger",
+      shortLabel: "Enterprise Value Realization Ledger",
+      phase: "enterprise value realization ledger",
+      track: "v1142 enterprise value realization ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-value-realization-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-value-realization-ledger",
+      idSuffix: "ENTERPRISE-VALUE-REALIZATION-LEDGER",
+      scoreKey: "enterpriseValueRealizationLedgerScore",
+      decisionKey: "enterpriseValueRealizationLedgerDecision",
+      stateKey: "enterpriseValueRealizationLedgerState",
+      lineKey: "enterpriseValueRealizationLedgerLine",
+      primarySignal: "Pilot enterprise value realization ledger",
+      primaryNote: "Traces value promises through workflow adoption, accepted outcomes, evidence, attribution, economics, renewal, expansion, correction, learning, and signed realization receipt.",
+      summary: "Trace enterprise value from promise through adoption, accepted outcomes, evidence, attribution, economics, renewal, expansion, correction, and signed receipt.",
+      trackSummary: "Connected risk now meets a value ledger where every promise must reach adopted work, accepted outcomes, credible evidence, economic realization, renewal, expansion, or correction.",
+      stageSummary: "Enterprise value now has one ledger from promised baseline through adoption, outcomes, evidence, economics, renewal, expansion, correction, learning, and receipt.",
+      openDecision: "Recognize realized value",
+      guardedDecision: "Open guarded value recognition",
+      holdDecision: "Hold value claim",
+      repairDecision: "Repair realization proof",
+      nextOpen: "Recognize realized value and keep promise, adoption, outcome, evidence, attribution, economics, renewal, expansion, correction, and receipt together.",
+      nextGuarded: "Open guarded recognition while one bounded adoption, outcome, evidence, attribution, economic, customer-acceptance, renewal, or expansion condition stays watched.",
+      nextHold: "Hold the value claim until the baseline, action, adoption, outcome, evidence, attribution, customer acceptance, and economic treatment are credible.",
+      nextRepair: "Repair realization proof before ROI, savings, revenue, risk reduction, renewal, expansion, reference, pricing, or product claims are reused.",
+      axes: [
+        ["Value promise baseline","sponsorGuard",0.94,10,"Customer objective, baseline, measure, target, scope, timing, assumptions, dependencies, owner, and acceptance are explicit."],
+        ["Workflow adoption","ownerCommand",0.94,10,"Users, frequency, depth, completion, exceptions, workarounds, training, support, sustained use, and owner are measured."],
+        ["Outcome acceptance","supportGuard",0.94,10,"Observed change, customer interpretation, beneficiary, timing, quality, caveat, rejection, correction, and acceptance are recorded."],
+        ["Evidence and attribution","proofGuard",0.98,10,"Source, method, counterfactual, contribution, confidence, confounders, verifier, privacy, freshness, and audit remain visible."],
+        ["Economic realization","reviewGuard",0.94,10,"Revenue, saving, avoided cost, risk reduction, cash, margin, timing, accounting, sensitivity, and downside are honest."],
+        ["Renewal and expansion","launchMoment",0.92,9,"Accepted value, sponsor confidence, product fit, service, price, renewal, expansion, reference, and next use are linked."],
+        ["Correction and learning","rollbackGuard",0.96,10,"Missed promise, weak adoption, rejected outcome, attribution error, economic variance, correction, retune, and retirement feed learning."],
+        ["Realization receipt","guardClosure",0.98,10,"Signed receipt records promise, adoption, outcome, evidence, attribution, economics, customer acceptance, decision, and next review."],
+      ],
+    },
+    {
+      key: "regulated-market-entry-council",
+      version: "v1143",
+      number: 1143,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Regulated Market Entry Council",
+      shortLabel: "Regulated Market Entry Council",
+      phase: "regulated market entry council",
+      track: "v1143 regulated market entry council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-regulated-market-entry-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-regulated-market-entry-council",
+      idSuffix: "REGULATED-MARKET-ENTRY-COUNCIL",
+      scoreKey: "regulatedMarketEntryCouncilScore",
+      decisionKey: "regulatedMarketEntryCouncilDecision",
+      stateKey: "regulatedMarketEntryCouncilState",
+      lineKey: "regulatedMarketEntryCouncilLine",
+      primarySignal: "Pilot regulated market entry council",
+      primaryNote: "Governs sector and country entry across scope, entity, licensing, data, privacy, security, AI obligations, commercial, tax, operations, authority, and signed entry receipt.",
+      summary: "Govern regulated entry across market scope, entity, licensing, data, privacy, security, AI obligations, commercial, tax, operations, and signed receipt.",
+      trackSummary: "Value evidence now reaches a regulated-entry council where a sector or country cannot open until legal basis, data boundaries, assurance, AI obligations, economics, and operations align.",
+      stageSummary: "Regulated expansion now has one council for market scope, entity, licensing, data, privacy, security, AI, commercial, tax, operating readiness, authority, and receipt.",
+      openDecision: "Authorize regulated entry",
+      guardedDecision: "Open guarded regulated entry",
+      holdDecision: "Hold market entry",
+      repairDecision: "Repair entry proof",
+      nextOpen: "Authorize regulated entry and keep scope, entity, licensing, data, privacy, security, AI, commercial, tax, operations, authority, and receipt together.",
+      nextGuarded: "Open a guarded entry while one bounded, disclosed, counsel-reviewed, regulator-aware, customer-accepted, and owned condition stays watched.",
+      nextHold: "Hold market entry until legal basis, licensing, data handling, security, AI obligations, contracts, tax, operations, evidence, and authority are decision-ready.",
+      nextRepair: "Repair entry proof before sales, processing, hosting, AI guidance, contracts, invoices, support, partners, or public market claims begin.",
+      axes: [
+        ["Market and sector scope","reviewGuard",0.94,10,"Country, sector, customers, users, products, services, data, AI uses, channels, exclusions, and authority are bounded."],
+        ["Entity and licensing","sponsorGuard",0.98,10,"Legal entity, ownership, registration, licenses, permits, representatives, filings, renewals, restrictions, and advice are current."],
+        ["Data and privacy","tenantGuard",0.98,10,"Roles, purpose, categories, localization, transfer, consent, retention, deletion, rights, processors, and impact review align."],
+        ["Security and assurance","proofGuard",0.98,10,"Architecture, identity, encryption, testing, logging, incidents, resilience, suppliers, certifications, and evidence meet scope."],
+        ["AI and model obligations","rollbackGuard",0.96,10,"Classification, data, transparency, evaluation, human control, fairness, monitoring, incidents, records, and rollback are governed."],
+        ["Commercial and tax","ownerCommand",0.94,10,"Offer, pricing, currency, tax, invoice, payment, consumer or enterprise terms, liability, renewal, and exit are approved."],
+        ["Operating readiness","supportGuard",0.96,10,"Hosting, language, onboarding, implementation, support, complaints, incidents, partners, continuity, and oversight are ready."],
+        ["Entry approval receipt","guardClosure",0.98,10,"Signed receipt records scope, advice, obligations, controls, evidence, exceptions, owners, expiry, entry decision, and next review."],
+      ],
+    },
+    {
+      key: "ceo-operating-portfolio-review",
+      version: "v1144",
+      number: 1144,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review",
+      shortLabel: "CEO Operating Portfolio Review",
+      phase: "ceo operating portfolio review",
+      track: "v1144 ceo operating portfolio review",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-ceo-operating-portfolio-review",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-ceo-operating-portfolio-review",
+      idSuffix: "CEO-OPERATING-PORTFOLIO-REVIEW",
+      scoreKey: "ceoOperatingPortfolioReviewScore",
+      decisionKey: "ceoOperatingPortfolioReviewDecision",
+      stateKey: "ceoOperatingPortfolioReviewState",
+      lineKey: "ceoOperatingPortfolioReviewLine",
+      primarySignal: "Pilot CEO operating portfolio review",
+      primaryNote: "Combines customer value, market health, risk, resilience, product, AI, service, capacity, people, partners, capital, scenarios, authority, and signed CEO receipt.",
+      summary: "Review the operating portfolio across value, markets, risk, resilience, product, AI, service, capacity, people, partners, capital, scenarios, and signed receipt.",
+      trackSummary: "Regulated expansion now culminates in one CEO portfolio review where value, customer and market health, risk, resilience, product, AI, service, capacity, organization, capital, and decisions reconcile.",
+      stageSummary: "Executive operating control now has one portfolio review for value, markets, risk, resilience, product, AI, service, capacity, people, partners, capital, scenarios, and receipt.",
+      openDecision: "Authorize portfolio posture",
+      guardedDecision: "Open guarded portfolio posture",
+      holdDecision: "Hold portfolio commitment",
+      repairDecision: "Repair executive proof",
+      nextOpen: "Authorize the portfolio posture and keep value, markets, risk, resilience, product, AI, service, capacity, organization, capital, scenarios, and receipt together.",
+      nextGuarded: "Open a guarded portfolio posture while one bounded value, customer, market, risk, product, service, capacity, organization, or capital condition stays watched.",
+      nextHold: "Hold portfolio commitments when growth, value, risk, resilience, product, service, people, partners, capacity, cash, or authority do not reconcile.",
+      nextRepair: "Repair executive proof before strategy, investment, hiring, market entry, product scope, customer commitment, risk appetite, or public claims are approved.",
+      axes: [
+        ["Portfolio value","proofGuard",0.96,10,"Promised, adopted, accepted, evidenced, realized, renewed, expanded, corrected, and at-risk value are reconciled."],
+        ["Customer and market health","reviewGuard",0.94,10,"Demand, fit, adoption, outcomes, service, trust, retention, expansion, concentration, and market posture are visible."],
+        ["Risk and resilience","rollbackGuard",0.98,10,"Customer, partner, operational, security, privacy, compliance, financial, concentration, incident, recovery, and downside align."],
+        ["Product and AI","tenantGuard",0.96,10,"Strategy, roadmap, quality, architecture, data, AI value, safety, monitoring, debt, releases, and learning are governed."],
+        ["Service and capacity","supportGuard",0.96,10,"Implementation, reliability, support, success, security review, regional coverage, staffing, partners, and headroom match demand."],
+        ["People, partners, and organization","ownerCommand",0.94,10,"Decision rights, leadership, skills, capacity, incentives, succession, culture, partners, accountability, and change are coherent."],
+        ["Capital and scenarios","sponsorGuard",0.96,10,"Revenue, margin, cash, runway, investments, hiring, infrastructure, markets, sensitivities, options, and stop thresholds align."],
+        ["CEO decision receipt","guardClosure",0.98,10,"Signed receipt records posture, assumptions, evidence, dissent, decisions, investments, owners, limits, expiry, and next review."],
       ],
     },
   );
@@ -28722,6 +28917,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCeoOperatingPortfolioReviewPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegulatedMarketEntryCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseValueRealizationLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAndPartnerRiskNetworkPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingRhythmCommandPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingModelApprovalCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiMarketUnitEconomicsCommandPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseProcurementAccelerationRoomPreview(model, autopilot)}",
@@ -38233,6 +38433,61 @@ const state = {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "global-operating-model-approval-council");
   }
 
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingRhythmCommandSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-operating-rhythm-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingRhythmCommand(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-operating-rhythm-command");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingRhythmCommandPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-operating-rhythm-command");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAndPartnerRiskNetworkSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-and-partner-risk-network");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAndPartnerRiskNetwork(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-and-partner-risk-network");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAndPartnerRiskNetworkPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-and-partner-risk-network");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseValueRealizationLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "enterprise-value-realization-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseValueRealizationLedger(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "enterprise-value-realization-ledger");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseValueRealizationLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "enterprise-value-realization-ledger");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegulatedMarketEntryCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "regulated-market-entry-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegulatedMarketEntryCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "regulated-market-entry-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegulatedMarketEntryCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "regulated-market-entry-council");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCeoOperatingPortfolioReviewSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "ceo-operating-portfolio-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCeoOperatingPortfolioReview(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "ceo-operating-portfolio-review");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCeoOperatingPortfolioReviewPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "ceo-operating-portfolio-review");
+  }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
@@ -103042,9 +103297,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1140", "First Pilot Expansion Rollout Reuse Market Pilot Global Operating Rhythm Command", "Turn the approved model into daily, weekly, monthly, quarterly, incident, customer, board, and audit rhythms with a signed cadence receipt."],
-      ["v1141", "First Pilot Expansion Rollout Reuse Market Pilot Customer and Partner Risk Network", "Govern connected customer and partner risk across concentration, dependencies, service, trust, commercials, incidents, recovery, and signed network receipt."],
-      ["v1142", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Value Realization Ledger", "Trace promised value into adopted workflows, accepted outcomes, evidence, economics, renewals, expansions, corrections, and signed realization receipt."],
+      ["v1145", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Operating Scenario Simulator", "Compare growth, capacity, risk, market, product, service, and capital choices before executive commitments are released."],
+      ["v1146", "First Pilot Expansion Rollout Reuse Market Pilot Global Capital and Capacity Allocation Board", "Allocate people, platform, trust, service, partner, market, and cash capacity against verified value and downside."],
+      ["v1147", "First Pilot Expansion Rollout Reuse Market Pilot Annual Strategy Renewal Council", "Renew or retire strategic commitments using realized value, operating evidence, scenarios, risk appetite, and accountable receipts."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
