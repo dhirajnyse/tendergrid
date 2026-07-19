@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1104";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Readiness Council";
+  const BUILD_VERSION = "v1109";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Customer Launch Authorization Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1104.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1104.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1109.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1109.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -11737,6 +11737,201 @@
         ["Rollback drill", "rollbackGuard", 0.84, 6, "A failed release is rolled back within the target window."],
         ["Council sign-off", "ownerCommand", 0.84, 6, "Engineering, product, security, and operations sign off."],
         ["Staging receipt", "guardClosure", 0.88, 8, "Signed staging receipt closes the council."],
+      ],
+    },
+    {
+      key: "production-observability-command-room",
+      version: "v1105",
+      number: 1105,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Observability Command Room",
+      shortLabel: "Production Observability Command Room",
+      phase: "production observability command room",
+      track: "v1105 production observability command room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-observability-command-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-observability-command-room",
+      idSuffix: "PRODUCTION-OBSERVABILITY-COMMAND-ROOM",
+      scoreKey: "productionObservabilityCommandRoomScore",
+      decisionKey: "productionObservabilityCommandRoomDecision",
+      stateKey: "productionObservabilityCommandRoomState",
+      lineKey: "productionObservabilityCommandRoomLine",
+      primarySignal: "Pilot production observability command room",
+      primaryNote: "Operationalizes production visibility across structured logs, service metrics, trace correlation, service objectives, alert policy, incident ownership, escalation route, and signed observability receipt.",
+      summary: "Operationalize production logs, metrics, traces, service objectives, alerts, incident ownership, escalation, and observability receipt.",
+      trackSummary: "Staging readiness now becomes production visibility across logs, metrics, traces, objectives, alerts, ownership, escalation, and signed receipt.",
+      stageSummary: "Production observability now has log, metric, trace, objective, alert, ownership, escalation, and receipt controls.",
+      openDecision: "Approve observability control",
+      guardedDecision: "Approve guarded visibility",
+      holdDecision: "Hold production exposure",
+      repairDecision: "Repair observability proof",
+      nextOpen: "Approve production observability and keep logs, metrics, traces, service objectives, alert policy, incident ownership, escalation, and receipt together.",
+      nextGuarded: "Approve guarded visibility while one log, metric, trace, objective, alert, owner, escalation, or receipt lane stays watched.",
+      nextHold: "Hold production exposure until logs, metrics, traces, and alert routing are clear.",
+      nextRepair: "Repair observability proof before backup and recovery evidence is accepted.",
+      axes: [
+        ["Structured logs", "tenantGuard", 0.86, 7, "Logs carry tenant-safe context without leaking sensitive data."],
+        ["Service metrics", "proofGuard", 0.84, 6, "Availability, latency, errors, and saturation are measurable."],
+        ["Trace correlation", "reviewGuard", 0.82, 5, "Requests can be followed across production boundaries."],
+        ["Service objectives", "sponsorGuard", 0.84, 6, "Customer-facing objectives have measurable indicators."],
+        ["Alert policy", "supportGuard", 0.86, 7, "Actionable alerts route by severity and ownership."],
+        ["Incident owner", "ownerCommand", 0.84, 6, "One incident commander is accountable per event."],
+        ["Escalation route", "rollbackGuard", 0.82, 5, "Escalation and rollback triggers are explicit."],
+        ["Observability receipt", "guardClosure", 0.86, 7, "Signed observability receipt closes the room."],
+      ],
+    },
+    {
+      key: "customer-data-backup-and-recovery-gate",
+      version: "v1106",
+      number: 1106,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Data Backup and Recovery Gate",
+      shortLabel: "Customer Data Backup and Recovery Gate",
+      phase: "customer data backup and recovery gate",
+      track: "v1106 customer data backup and recovery gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-data-backup-and-recovery-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-data-backup-and-recovery-gate",
+      idSuffix: "CUSTOMER-DATA-BACKUP-AND-RECOVERY-GATE",
+      scoreKey: "customerDataBackupAndRecoveryGateScore",
+      decisionKey: "customerDataBackupAndRecoveryGateDecision",
+      stateKey: "customerDataBackupAndRecoveryGateState",
+      lineKey: "customerDataBackupAndRecoveryGateLine",
+      primarySignal: "Pilot customer data backup and recovery gate",
+      primaryNote: "Proves customer-data recoverability across encrypted backups, schedule coverage, retention policy, restore testing, tenant recovery, integrity verification, recovery targets, and signed recovery receipt.",
+      summary: "Prove encrypted backups, restore tests, retention policy, tenant recovery, integrity checks, recovery objectives, ownership, and signed recovery receipt.",
+      trackSummary: "Production visibility now becomes customer-data recoverability across encryption, schedule, retention, restore, tenant recovery, integrity, objectives, and receipt.",
+      stageSummary: "Customer recovery now has encryption, schedule, retention, restore, tenant, integrity, target, and receipt controls.",
+      openDecision: "Approve recovery posture",
+      guardedDecision: "Approve guarded recovery",
+      holdDecision: "Hold customer data",
+      repairDecision: "Repair recovery proof",
+      nextOpen: "Approve backup and recovery and keep encryption, schedule, retention, restore tests, tenant recovery, integrity, recovery targets, and receipt together.",
+      nextGuarded: "Approve guarded recovery while one encryption, schedule, retention, restore, tenant, integrity, target, or receipt lane stays watched.",
+      nextHold: "Hold customer data until encrypted backups, retention, restore testing, and tenant recovery are clear.",
+      nextRepair: "Repair recovery proof before the first tenant cutover is rehearsed.",
+      axes: [
+        ["Backup encryption", "tenantGuard", 0.88, 8, "Backups are encrypted with controlled key access."],
+        ["Schedule coverage", "supportGuard", 0.84, 6, "Every persistent store has an owned backup schedule."],
+        ["Retention policy", "reviewGuard", 0.82, 5, "Retention matches legal, privacy, and recovery needs."],
+        ["Restore test", "launchMoment", 0.86, 7, "A clean restore completes in an isolated environment."],
+        ["Tenant recovery", "tenantGuard", 0.86, 7, "One tenant can be recovered without exposing another."],
+        ["Integrity check", "proofGuard", 0.86, 7, "Restored records, links, values, and audit events reconcile."],
+        ["Recovery targets", "ownerCommand", 0.84, 6, "RPO, RTO, owner, and escalation are approved."],
+        ["Recovery receipt", "guardClosure", 0.88, 8, "Signed recovery receipt closes the gate."],
+      ],
+    },
+    {
+      key: "first-tenant-cutover-rehearsal",
+      version: "v1107",
+      number: 1107,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Tenant Cutover Rehearsal",
+      shortLabel: "First Tenant Cutover Rehearsal",
+      phase: "first tenant cutover rehearsal",
+      track: "v1107 first tenant cutover rehearsal",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-tenant-cutover-rehearsal",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-tenant-cutover-rehearsal",
+      idSuffix: "FIRST-TENANT-CUTOVER-REHEARSAL",
+      scoreKey: "firstTenantCutoverRehearsalScore",
+      decisionKey: "firstTenantCutoverRehearsalDecision",
+      stateKey: "firstTenantCutoverRehearsalState",
+      lineKey: "firstTenantCutoverRehearsalLine",
+      primarySignal: "Pilot first tenant cutover rehearsal",
+      primaryNote: "Rehearses the first production tenant across readiness lock, source freeze, data migration, access activation, billing handoff, live monitoring, rollback window, and signed cutover receipt.",
+      summary: "Rehearse the first tenant cutover with readiness lock, data freeze, migration, access activation, billing handoff, monitoring, rollback, and cutover receipt.",
+      trackSummary: "Recoverable customer data now becomes a tenant cutover rehearsal across readiness, freeze, migration, access, billing, monitoring, rollback, and signed receipt.",
+      stageSummary: "First tenant cutover now has readiness, freeze, migration, access, billing, monitoring, rollback, and receipt controls.",
+      openDecision: "Approve cutover rehearsal",
+      guardedDecision: "Approve guarded cutover",
+      holdDecision: "Hold tenant cutover",
+      repairDecision: "Repair cutover proof",
+      nextOpen: "Approve the cutover rehearsal and keep readiness lock, source freeze, migration, access activation, billing handoff, monitoring, rollback, and receipt together.",
+      nextGuarded: "Approve guarded cutover while one readiness, freeze, migration, access, billing, monitoring, rollback, or receipt lane stays watched.",
+      nextHold: "Hold tenant cutover until readiness, source freeze, migration, and access activation are clear.",
+      nextRepair: "Repair cutover proof before production incident and rollback exercises begin.",
+      axes: [
+        ["Readiness lock", "reviewGuard", 0.86, 7, "Scope, owner, window, dependencies, and exit criteria are locked."],
+        ["Source freeze", "sponsorGuard", 0.82, 5, "Customer writes and late source changes are controlled."],
+        ["Migration run", "proofGuard", 0.88, 8, "Migration completes with validation and reconciliation."],
+        ["Access activation", "tenantGuard", 0.88, 8, "Users receive tenant-scoped roles and sessions."],
+        ["Billing handoff", "launchMoment", 0.84, 6, "Subscription and entitlement state agree at activation."],
+        ["Live monitoring", "supportGuard", 0.86, 7, "Cutover metrics, logs, alerts, and support channel are watched."],
+        ["Rollback window", "rollbackGuard", 0.86, 7, "Rollback trigger, deadline, owner, and source recovery are explicit."],
+        ["Cutover receipt", "guardClosure", 0.88, 8, "Signed rehearsal receipt closes the cutover."],
+      ],
+    },
+    {
+      key: "production-incident-and-rollback-exercise",
+      version: "v1108",
+      number: 1108,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Incident and Rollback Exercise",
+      shortLabel: "Production Incident and Rollback Exercise",
+      phase: "production incident and rollback exercise",
+      track: "v1108 production incident and rollback exercise",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-incident-and-rollback-exercise",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-incident-and-rollback-exercise",
+      idSuffix: "PRODUCTION-INCIDENT-AND-ROLLBACK-EXERCISE",
+      scoreKey: "productionIncidentAndRollbackExerciseScore",
+      decisionKey: "productionIncidentAndRollbackExerciseDecision",
+      stateKey: "productionIncidentAndRollbackExerciseState",
+      lineKey: "productionIncidentAndRollbackExerciseLine",
+      primarySignal: "Pilot production incident and rollback exercise",
+      primaryNote: "Exercises operational recovery across detection signal, severity triage, customer communication, containment, rollback execution, recovery validation, learning review, and signed exercise receipt.",
+      summary: "Exercise incident detection, triage, communication, containment, rollback, recovery validation, learning, and signed exercise receipt.",
+      trackSummary: "The tenant cutover rehearsal now becomes an incident exercise across detection, triage, communication, containment, rollback, validation, learning, and receipt.",
+      stageSummary: "Production incident recovery now has detection, triage, communication, containment, rollback, validation, learning, and receipt controls.",
+      openDecision: "Approve incident readiness",
+      guardedDecision: "Approve guarded response",
+      holdDecision: "Hold customer launch",
+      repairDecision: "Repair incident proof",
+      nextOpen: "Approve incident readiness and keep detection, triage, customer communication, containment, rollback, recovery validation, learning, and receipt together.",
+      nextGuarded: "Approve guarded response while one detection, triage, communication, containment, rollback, validation, learning, or receipt lane stays watched.",
+      nextHold: "Hold customer launch until detection, triage, containment, and rollback execution are clear.",
+      nextRepair: "Repair incident-response proof before the customer launch board convenes.",
+      axes: [
+        ["Detection signal", "supportGuard", 0.86, 7, "The injected failure produces an actionable alert."],
+        ["Severity triage", "reviewGuard", 0.84, 6, "Impact, tenant scope, severity, and commander are named quickly."],
+        ["Customer communication", "sponsorGuard", 0.82, 5, "Status, impact, workaround, and next update are customer-safe."],
+        ["Containment", "tenantGuard", 0.86, 7, "Failure is contained without widening tenant impact."],
+        ["Rollback execution", "rollbackGuard", 0.88, 8, "The release or data change is reversed within target."],
+        ["Recovery validation", "proofGuard", 0.88, 8, "Service, data, access, billing, and audit health reconcile."],
+        ["Learning review", "ownerCommand", 0.84, 6, "Actions, owners, dates, and preventive controls are recorded."],
+        ["Exercise receipt", "guardClosure", 0.88, 8, "Signed exercise receipt closes the response drill."],
+      ],
+    },
+    {
+      key: "first-customer-launch-authorization-board",
+      version: "v1109",
+      number: 1109,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Customer Launch Authorization Board",
+      shortLabel: "First Customer Launch Authorization Board",
+      phase: "first customer launch authorization board",
+      track: "v1109 first customer launch authorization board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-launch-authorization-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-launch-authorization-board",
+      idSuffix: "FIRST-CUSTOMER-LAUNCH-AUTHORIZATION-BOARD",
+      scoreKey: "firstCustomerLaunchAuthorizationBoardScore",
+      decisionKey: "firstCustomerLaunchAuthorizationBoardDecision",
+      stateKey: "firstCustomerLaunchAuthorizationBoardState",
+      lineKey: "firstCustomerLaunchAuthorizationBoardLine",
+      primarySignal: "Pilot first customer launch authorization board",
+      primaryNote: "Combines architecture, tenant security, migration proof, billing readiness, reliability controls, customer support, executive ownership, and signed first-customer launch authorization.",
+      summary: "Authorize the first customer launch across architecture, tenant security, migration, billing, reliability, support, executive ownership, and signed receipt.",
+      trackSummary: "Incident and rollback proof now becomes first-customer launch authority across architecture, security, migration, billing, reliability, support, ownership, and receipt.",
+      stageSummary: "First customer launch now has architecture, security, migration, billing, reliability, support, ownership, and authorization controls.",
+      openDecision: "Authorize first customer",
+      guardedDecision: "Authorize guarded launch",
+      holdDecision: "Hold first customer",
+      repairDecision: "Repair launch proof",
+      nextOpen: "Authorize the first customer launch and keep architecture, tenant security, migration, billing, reliability, support, executive ownership, and signed receipt together.",
+      nextGuarded: "Authorize a guarded launch while one architecture, security, migration, billing, reliability, support, owner, or receipt lane stays watched.",
+      nextHold: "Hold the first customer until architecture, tenant security, migration, billing, and reliability evidence are clear.",
+      nextRepair: "Repair launch authorization before the production launch room opens.",
+      axes: [
+        ["Architecture foundation", "reviewGuard", 0.88, 8, "Backend, environment, secret, and rollback architecture are approved."],
+        ["Tenant security", "tenantGuard", 0.9, 9, "Identity, roles, isolation, audit, and recovery are proven."],
+        ["Migration proof", "proofGuard", 0.88, 8, "Customer data migration and reconciliation are rehearsed."],
+        ["Billing readiness", "launchMoment", 0.86, 7, "Checkout, webhooks, invoices, and entitlements agree."],
+        ["Reliability controls", "supportGuard", 0.88, 8, "Observability, backup, recovery, incident, and rollback pass."],
+        ["Customer support", "sponsorGuard", 0.86, 7, "Onboarding, support, communications, and escalation are staffed."],
+        ["Executive owner", "ownerCommand", 0.86, 7, "One executive owns launch decision and stop authority."],
+        ["Launch authorization", "guardClosure", 0.9, 9, "Signed first-customer authorization closes the board."],
       ],
     },
   );
@@ -27357,6 +27552,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerLaunchAuthorizationBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentAndRollbackExercisePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstTenantCutoverRehearsalPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerDataBackupAndRecoveryGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityCommandRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentReadinessCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingIntegrationControlPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPersistentDataMigrationRehearsalPreview(model, autopilot)}",
@@ -36435,6 +36635,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentReadinessCouncilPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-environment-readiness-council");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityCommandRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-observability-command-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityCommandRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-observability-command-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityCommandRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-observability-command-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerDataBackupAndRecoveryGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-data-backup-and-recovery-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerDataBackupAndRecoveryGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-data-backup-and-recovery-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerDataBackupAndRecoveryGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-data-backup-and-recovery-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstTenantCutoverRehearsalSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-tenant-cutover-rehearsal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstTenantCutoverRehearsal(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-tenant-cutover-rehearsal");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstTenantCutoverRehearsalPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-tenant-cutover-rehearsal");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentAndRollbackExerciseSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-incident-and-rollback-exercise");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentAndRollbackExercise(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-incident-and-rollback-exercise");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentAndRollbackExercisePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-incident-and-rollback-exercise");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerLaunchAuthorizationBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-customer-launch-authorization-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerLaunchAuthorizationBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-customer-launch-authorization-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerLaunchAuthorizationBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-launch-authorization-board");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -101245,9 +101500,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1105", "First Pilot Expansion Rollout Reuse Market Pilot Production Observability Command Room", "Operationalize production logs, metrics, traces, alert policy, service objectives, incident ownership, escalation, and observability receipt."],
-      ["v1106", "First Pilot Expansion Rollout Reuse Market Pilot Customer Data Backup and Recovery Gate", "Prove encrypted backups, restore tests, retention policy, tenant recovery, integrity checks, recovery objectives, ownership, and signed recovery receipt."],
-      ["v1107", "First Pilot Expansion Rollout Reuse Market Pilot First Tenant Cutover Rehearsal", "Rehearse the first tenant cutover with readiness lock, data freeze, migration, access activation, billing handoff, monitoring, rollback, and cutover receipt."],
+      ["v1110", "First Pilot Expansion Rollout Reuse Market Pilot First Customer Production Launch Room", "Operate the first customer launch with go-time lock, migration, access, billing, monitoring, support, rollback authority, and signed production launch receipt."],
+      ["v1111", "First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Reliability Watch", "Watch the first production period across service health, data integrity, access, billing, support demand, customer signals, incident posture, and reliability receipt."],
+      ["v1112", "First Pilot Expansion Rollout Reuse Market Pilot Customer Adoption and Value Receipt", "Capture first-customer adoption and value across active users, workflow movement, control quality, time saved, risk reduced, sponsor acceptance, renewal signal, and signed value receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
