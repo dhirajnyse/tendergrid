@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1114";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Renewal Readiness Gate";
+  const BUILD_VERSION = "v1119";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Repeatable Customer Lifecycle Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1114.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1114.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1119.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1119.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -12127,6 +12127,201 @@
         ["Commercial posture", "ownerCommand", 0.86, 7, "Price, scope, concession boundaries, procurement path, and decision dates are known."],
         ["Renewal owner", "tenantGuard", 0.86, 7, "One owner coordinates customer, commercial, product, service, and approval lanes."],
         ["Readiness receipt", "guardClosure", 0.9, 9, "Signed receipt records readiness, gaps, owners, dates, and next decision."],
+      ],
+    },
+    {
+      key: "first-customer-renewal-decision-room",
+      version: "v1115",
+      number: 1115,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Customer Renewal Decision Room",
+      shortLabel: "First Customer Renewal Decision Room",
+      phase: "first customer renewal decision room",
+      track: "v1115 first customer renewal decision room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-renewal-decision-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-renewal-decision-room",
+      idSuffix: "FIRST-CUSTOMER-RENEWAL-DECISION-ROOM",
+      scoreKey: "firstCustomerRenewalDecisionRoomScore",
+      decisionKey: "firstCustomerRenewalDecisionRoomDecision",
+      stateKey: "firstCustomerRenewalDecisionRoomState",
+      lineKey: "firstCustomerRenewalDecisionRoomLine",
+      primarySignal: "Pilot first customer renewal decision room",
+      primaryNote: "Converts renewal readiness into one accountable renew, renegotiate, or hold decision with evidence, terms, sponsor intent, service promises, approvals, boundaries, close plan, and receipt.",
+      summary: "Decide the first customer renewal across evidence, commercial terms, sponsor intent, service commitments, approvals, negotiation boundaries, close plan, and signed decision receipt.",
+      trackSummary: "Renewal readiness now becomes a decision room where evidence, terms, sponsor intent, service commitments, approvals, negotiation boundaries, close plan, and receipt stay together.",
+      stageSummary: "The first customer renewal now has one accountable decision room from evidence bundle through signed decision receipt.",
+      openDecision: "Renew first customer",
+      guardedDecision: "Open guarded renewal",
+      holdDecision: "Hold renewal decision",
+      repairDecision: "Repair decision proof",
+      nextOpen: "Open the renewal decision and keep evidence, terms, sponsor intent, service commitments, approvals, boundaries, close plan, and receipt together.",
+      nextGuarded: "Open a guarded renewal while one commercial, approval, service, sponsor, or evidence condition stays watched.",
+      nextHold: "Hold the renewal decision until the evidence bundle, sponsor intent, commercial posture, and approval route are decision-ready.",
+      nextRepair: "Repair renewal decision proof before terms are issued or a commitment is represented to the customer.",
+      axes: [
+        ["Renewal evidence bundle","reviewGuard",0.9,9,"Contract, adoption, value, service, customer, and risk evidence is current and readable."],
+        ["Commercial terms","ownerCommand",0.88,8,"Scope, price, term, concessions, procurement steps, and expiry dates are explicit."],
+        ["Sponsor intent","sponsorGuard",0.9,9,"Customer sponsor intent, conditions, objections, and decision date are recorded."],
+        ["Service commitments","supportGuard",0.88,8,"Support, security, reliability, data, and success commitments match delivery capacity."],
+        ["Approval path","tenantGuard",0.86,7,"Customer and internal approvers, sequence, evidence needs, and deadlines are named."],
+        ["Negotiation boundary","rollbackGuard",0.88,8,"Floor, ceiling, tradeables, non-negotiables, and escalation route are controlled."],
+        ["Renewal close plan","launchMoment",0.88,8,"One owner coordinates proposal, negotiation, procurement, signature, activation, and handoff."],
+        ["Decision receipt","guardClosure",0.92,9,"Signed receipt records decision, terms, conditions, owners, dates, and next review."],
+      ],
+    },
+    {
+      key: "customer-expansion-opportunity-board",
+      version: "v1116",
+      number: 1116,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Expansion Opportunity Board",
+      shortLabel: "Customer Expansion Opportunity Board",
+      phase: "customer expansion opportunity board",
+      track: "v1116 customer expansion opportunity board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-expansion-opportunity-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-expansion-opportunity-board",
+      idSuffix: "CUSTOMER-EXPANSION-OPPORTUNITY-BOARD",
+      scoreKey: "customerExpansionOpportunityBoardScore",
+      decisionKey: "customerExpansionOpportunityBoardDecision",
+      stateKey: "customerExpansionOpportunityBoardState",
+      lineKey: "customerExpansionOpportunityBoardLine",
+      primarySignal: "Pilot customer expansion opportunity board",
+      primaryNote: "Qualifies additional users, workflows, units, and markets against accepted value, service capacity, commercial shape, sponsor ownership, and a signed opportunity receipt.",
+      summary: "Qualify customer expansion across new users, workflows, business units, value cases, service capacity, commercial shape, decision ownership, and signed opportunity receipt.",
+      trackSummary: "The renewal decision now becomes a controlled expansion board across demand, workflow fit, business units, value, capacity, commercials, sponsor ownership, and receipt.",
+      stageSummary: "Customer expansion now has one evidence-led opportunity board that protects delivery capacity and commercial clarity.",
+      openDecision: "Qualify expansion",
+      guardedDecision: "Open guarded expansion",
+      holdDecision: "Hold expansion claim",
+      repairDecision: "Repair opportunity proof",
+      nextOpen: "Qualify expansion and keep user demand, workflow fit, units, value, capacity, commercial shape, sponsor path, and receipt together.",
+      nextGuarded: "Open guarded expansion while one capacity, value, sponsor, workflow, or commercial condition stays watched.",
+      nextHold: "Hold the expansion claim until demand, value, delivery capacity, sponsor ownership, and commercial shape are decision-ready.",
+      nextRepair: "Repair opportunity proof before expansion scope, timing, or value is represented to the customer.",
+      axes: [
+        ["User demand","launchMoment",0.86,7,"Requested roles, seat volumes, access needs, and adoption owner are evidenced."],
+        ["Workflow demand","reviewGuard",0.88,8,"New workflows have current-state pain, target behavior, data needs, and acceptance criteria."],
+        ["Business-unit fit","tenantGuard",0.88,8,"Unit, country, process, policy, privacy, and tenant-boundary differences are explicit."],
+        ["Expansion value case","proofGuard",0.9,9,"Expected value, baseline, method, confidence, caveats, and customer validation are readable."],
+        ["Service capacity","supportGuard",0.88,8,"Implementation, data, training, support, security, and success capacity can absorb the scope."],
+        ["Commercial shape","ownerCommand",0.86,7,"Package, price, term, dependencies, procurement route, and concession boundaries are known."],
+        ["Expansion sponsor","sponsorGuard",0.9,9,"One customer sponsor owns the need, decision, adoption path, and success acceptance."],
+        ["Opportunity receipt","guardClosure",0.9,9,"Signed receipt records qualified scope, evidence, conditions, owner, date, and next gate."],
+      ],
+    },
+    {
+      key: "reference-customer-approval-gate",
+      version: "v1117",
+      number: 1117,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Reference Customer Approval Gate",
+      shortLabel: "Reference Customer Approval Gate",
+      phase: "reference customer approval gate",
+      track: "v1117 reference customer approval gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-reference-customer-approval-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-reference-customer-approval-gate",
+      idSuffix: "REFERENCE-CUSTOMER-APPROVAL-GATE",
+      scoreKey: "referenceCustomerApprovalGateScore",
+      decisionKey: "referenceCustomerApprovalGateDecision",
+      stateKey: "referenceCustomerApprovalGateState",
+      lineKey: "referenceCustomerApprovalGateLine",
+      primarySignal: "Pilot reference customer approval gate",
+      primaryNote: "Controls customer consent, claim accuracy, proof boundaries, privacy and legal review, review rights, channel scope, revocation, and signed reference receipt.",
+      summary: "Approve reference use across customer consent, proof boundaries, claim accuracy, privacy, review rights, channel scope, revocation, owner, and signed reference receipt.",
+      trackSummary: "Qualified customer value now becomes a reference approval gate where consent, claims, proof, privacy, review rights, channels, revocation, and receipt are explicit.",
+      stageSummary: "Reference use now has one customer-safe approval gate from consent through revocable signed receipt.",
+      openDecision: "Approve reference use",
+      guardedDecision: "Open guarded reference",
+      holdDecision: "Hold reference use",
+      repairDecision: "Repair reference proof",
+      nextOpen: "Approve reference use and keep consent, claims, proof boundary, privacy, review rights, channels, revocation, and receipt together.",
+      nextGuarded: "Open a guarded reference while one channel, claim, privacy, proof, or review condition stays watched.",
+      nextHold: "Hold reference use until customer consent, claim accuracy, proof boundary, legal posture, and review rights are explicit.",
+      nextRepair: "Repair reference proof before any customer name, logo, quote, metric, story, or contact is used.",
+      axes: [
+        ["Customer consent","sponsorGuard",0.92,9,"Named customer authority approves the exact reference purpose, materials, audience, and period."],
+        ["Claim accuracy","proofGuard",0.92,9,"Every quote, metric, result, attribution, and caveat matches accepted customer evidence."],
+        ["Proof boundary","reviewGuard",0.9,9,"Approved facts are separated from confidential, inferred, provisional, or unsupported claims."],
+        ["Privacy and legal","tenantGuard",0.9,9,"Personal data, confidentiality, trademarks, contracts, regulation, and regional rules are cleared."],
+        ["Customer review rights","ownerCommand",0.88,8,"Draft review, response window, final approval, correction, and expiry rights are documented."],
+        ["Channel scope","launchMoment",0.86,7,"Website, sales deck, event, analyst, social, press, and direct-reference permissions are distinct."],
+        ["Revocation path","rollbackGuard",0.9,9,"Customer can pause, correct, expire, or revoke use with one owner and removal deadline."],
+        ["Reference receipt","guardClosure",0.92,9,"Signed receipt records consent, approved claims, channels, dates, owners, and revocation terms."],
+      ],
+    },
+    {
+      key: "second-customer-launch-readiness-room",
+      version: "v1118",
+      number: 1118,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Second Customer Launch Readiness Room",
+      shortLabel: "Second Customer Launch Readiness Room",
+      phase: "second customer launch readiness room",
+      track: "v1118 second customer launch readiness room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-second-customer-launch-readiness-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-second-customer-launch-readiness-room",
+      idSuffix: "SECOND-CUSTOMER-LAUNCH-READINESS-ROOM",
+      scoreKey: "secondCustomerLaunchReadinessRoomScore",
+      decisionKey: "secondCustomerLaunchReadinessRoomDecision",
+      stateKey: "secondCustomerLaunchReadinessRoomState",
+      lineKey: "secondCustomerLaunchReadinessRoomLine",
+      primarySignal: "Pilot second customer launch readiness room",
+      primaryNote: "Tests whether first-customer learning can safely repeat across configuration, migration, tenant isolation, service capacity, billing, ownership, and signed readiness receipt.",
+      summary: "Prove second-customer launch readiness across repeatability, configuration delta, migration, tenant isolation, service capacity, billing, launch ownership, and signed receipt.",
+      trackSummary: "First-customer renewal, expansion, and reference learning now face a second-customer readiness room that exposes what truly repeats and what must remain local.",
+      stageSummary: "Second-customer launch now has one readiness room for repeatability, isolation, migration, service, commercial activation, ownership, and receipt.",
+      openDecision: "Ready second launch",
+      guardedDecision: "Open guarded second launch",
+      holdDecision: "Hold second launch",
+      repairDecision: "Repair repeatability proof",
+      nextOpen: "Ready the second launch and keep repeatability, configuration, migration, isolation, capacity, billing, owner, and receipt together.",
+      nextGuarded: "Open a guarded second launch while one configuration, migration, capacity, billing, or tenant condition stays watched.",
+      nextHold: "Hold the second launch until tenant isolation, data movement, service capacity, ownership, and commercial activation are decision-ready.",
+      nextRepair: "Repair repeatability proof before customer data is accepted or launch timing is committed.",
+      axes: [
+        ["Repeatability proof","proofGuard",0.9,9,"First-customer playbooks, controls, templates, receipts, and lessons are reusable and versioned."],
+        ["Configuration delta","reviewGuard",0.88,8,"Customer-specific fields, workflow, roles, policy, language, and country differences are mapped."],
+        ["Data migration","rollbackGuard",0.9,9,"Source mapping, validation, reconciliation, rejection, rollback, and customer acceptance are rehearsed."],
+        ["Tenant isolation","tenantGuard",0.94,10,"Identity, authorization, data, files, logs, exports, support, and deletion remain tenant-safe."],
+        ["Service capacity","supportGuard",0.9,9,"Implementation, training, support, reliability, incident, and success capacity cover both customers."],
+        ["Billing and procurement","ownerCommand",0.88,8,"Order, tax, invoice, payment, access activation, renewal, and exception routes are controlled."],
+        ["Second launch owner","sponsorGuard",0.88,8,"One accountable owner coordinates customer, product, data, security, service, billing, and launch."],
+        ["Readiness receipt","guardClosure",0.92,9,"Signed receipt records scope, gates, exceptions, owners, dates, rollback, and launch decision."],
+      ],
+    },
+    {
+      key: "repeatable-customer-lifecycle-council",
+      version: "v1119",
+      number: 1119,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Repeatable Customer Lifecycle Council",
+      shortLabel: "Repeatable Customer Lifecycle Council",
+      phase: "repeatable customer lifecycle council",
+      track: "v1119 repeatable customer lifecycle council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-repeatable-customer-lifecycle-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-repeatable-customer-lifecycle-council",
+      idSuffix: "REPEATABLE-CUSTOMER-LIFECYCLE-COUNCIL",
+      scoreKey: "repeatableCustomerLifecycleCouncilScore",
+      decisionKey: "repeatableCustomerLifecycleCouncilDecision",
+      stateKey: "repeatableCustomerLifecycleCouncilState",
+      lineKey: "repeatableCustomerLifecycleCouncilLine",
+      primarySignal: "Pilot repeatable customer lifecycle council",
+      primaryNote: "Combines renewal, expansion, reference, and second-customer proof into a governed lifecycle playbook with automation candidates, controlled exceptions, and signed scale authorization.",
+      summary: "Authorize a repeatable customer lifecycle across renewal, expansion, reference governance, second-customer proof, automation, exceptions, economics, cadence, and signed receipt.",
+      trackSummary: "Customer renewal, expansion, reference, and second-launch proof now become one lifecycle council that distinguishes repeatable controls from customer-local exceptions.",
+      stageSummary: "The customer lifecycle now has one council for playbooks, automation, exceptions, economics, governance cadence, and scale authorization.",
+      openDecision: "Authorize lifecycle reuse",
+      guardedDecision: "Open guarded lifecycle",
+      holdDecision: "Hold lifecycle reuse",
+      repairDecision: "Repair lifecycle proof",
+      nextOpen: "Authorize lifecycle reuse and keep renewal, expansion, reference, second-customer proof, automation, exceptions, economics, cadence, and receipt together.",
+      nextGuarded: "Open a guarded lifecycle while one evidence, automation, exception, economic, governance, or capacity condition stays watched.",
+      nextHold: "Hold lifecycle reuse until repeatable controls, customer-local boundaries, ownership, economics, and scale evidence are decision-ready.",
+      nextRepair: "Repair lifecycle proof before automation or portfolio-wide operating claims are widened.",
+      axes: [
+        ["Lifecycle evidence","proofGuard",0.92,9,"Onboarding, adoption, value, service, renewal, expansion, and closeout receipts form one traceable chain."],
+        ["Renewal playbook","reviewGuard",0.9,9,"Readiness, decision, negotiation, signature, activation, and post-renewal controls are reusable."],
+        ["Expansion playbook","launchMoment",0.88,8,"Demand, value, capacity, commercials, sponsor decision, launch, and outcome acceptance are reusable."],
+        ["Reference governance","sponsorGuard",0.92,9,"Consent, claim accuracy, privacy, review rights, channels, expiry, and revocation stay customer-controlled."],
+        ["Second-customer proof","tenantGuard",0.92,9,"Configuration, migration, tenant isolation, service, billing, and ownership repeat without leakage."],
+        ["Automation candidates","ownerCommand",0.86,7,"Only stable, observable, reversible, approved lifecycle steps enter the automation queue."],
+        ["Control exceptions","rollbackGuard",0.9,9,"Customer-local, country, contract, security, service, and commercial exceptions remain visible and owned."],
+        ["Scale authorization receipt","guardClosure",0.94,10,"Signed receipt records reusable scope, exclusions, economics, owners, cadence, evidence, and next gate."],
       ],
     },
   );
@@ -27747,6 +27942,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRepeatableCustomerLifecycleCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerLaunchReadinessRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotReferenceCustomerApprovalGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerExpansionOpportunityBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerRenewalDecisionRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstRenewalReadinessGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSponsor30DayReviewPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAdoptionAndValueReceiptPreview(model, autopilot)}",
@@ -36945,6 +37145,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstRenewalReadinessGatePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "first-renewal-readiness-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerRenewalDecisionRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-customer-renewal-decision-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerRenewalDecisionRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-customer-renewal-decision-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerRenewalDecisionRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-renewal-decision-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerExpansionOpportunityBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-expansion-opportunity-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerExpansionOpportunityBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-expansion-opportunity-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerExpansionOpportunityBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-expansion-opportunity-board");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReferenceCustomerApprovalGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "reference-customer-approval-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReferenceCustomerApprovalGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "reference-customer-approval-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotReferenceCustomerApprovalGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "reference-customer-approval-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerLaunchReadinessRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "second-customer-launch-readiness-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerLaunchReadinessRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "second-customer-launch-readiness-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerLaunchReadinessRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "second-customer-launch-readiness-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRepeatableCustomerLifecycleCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "repeatable-customer-lifecycle-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRepeatableCustomerLifecycleCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "repeatable-customer-lifecycle-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRepeatableCustomerLifecycleCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "repeatable-customer-lifecycle-council");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -101755,11 +102010,10 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1115", "First Pilot Expansion Rollout Reuse Market Pilot First Customer Renewal Decision Room", "Decide the first customer renewal across evidence, commercial terms, sponsor intent, service commitments, approvals, negotiation boundaries, close plan, and signed decision receipt."],
-      ["v1116", "First Pilot Expansion Rollout Reuse Market Pilot Customer Expansion Opportunity Board", "Qualify customer expansion across new users, workflows, business units, value cases, service capacity, commercial shape, decision ownership, and signed opportunity receipt."],
-      ["v1117", "First Pilot Expansion Rollout Reuse Market Pilot Reference Customer Approval Gate", "Approve reference use across customer consent, proof boundaries, claim accuracy, privacy, review rights, channel scope, owner, and signed reference receipt."],
-    ];
-    const nextRunwayBuilds = [
+      ["v1120", "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Control Room", "Operate multiple live customers across health, value, service, renewal, expansion, risk, owner load, and portfolio receipt."],
+      ["v1121", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Service Capacity Gate", "Authorize service scale across implementation, migration, reliability, support, security, success, staffing, economics, and signed capacity receipt."],
+      ["v1122", "First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence Network Governance Board", "Govern cross-customer learning across consent, anonymity, tenant boundaries, claim portability, bias, regional rules, revocation, and signed evidence receipt."],
+    ];const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
       ...fallbackNextRunwayBuilds,
     ].filter(([version], index, queue) => getBuildNumber(version) > buildNumber && queue.findIndex(([candidate]) => candidate === version) === index).slice(0, 3);

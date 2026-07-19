@@ -1,5 +1,118 @@
 # Changelog
 
+## v1119 - First Pilot Expansion Rollout Reuse Market Pilot Repeatable Customer Lifecycle Council
+
+### Changes made
+- Added Repeatable Customer Lifecycle Council as the next governed customer-lifecycle room.
+- Added lifecycle evidence, renewal playbook, expansion playbook, reference governance, second-customer proof, automation candidates, control exceptions, scale authorization receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed `git diff --check` and HTTP smoke at `http://127.0.0.1:4177/` with the `v1119.1` assets.
+- Passed in-app browser QA for Build Phase and Command at desktop and 390 px mobile widths with no horizontal overflow or console errors.
+- Passed physical lifecycle-receipt copy tests in 320 ms on desktop and 318 ms on mobile with visible confirmation and no page unresponsiveness.
+
+### Known risks
+- Lifecycle reuse is still a static governance model until live multi-customer CRM, product telemetry, contracts, billing, support, identity, and outcome evidence are integrated.
+
+## v1118 - First Pilot Expansion Rollout Reuse Market Pilot Second Customer Launch Readiness Room
+
+### Changes made
+- Added Second Customer Launch Readiness Room as the next governed customer-lifecycle room.
+- Added repeatability proof, configuration delta, data migration, tenant isolation, service capacity, billing and procurement, second launch owner, readiness receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Second-customer readiness remains simulated until a distinct tenant, real migration, access controls, billing, support capacity, and customer acceptance are proven.
+
+## v1117 - First Pilot Expansion Rollout Reuse Market Pilot Reference Customer Approval Gate
+
+### Changes made
+- Added Reference Customer Approval Gate as the next governed customer-lifecycle room.
+- Added customer consent, claim accuracy, proof boundary, privacy and legal, customer review rights, channel scope, revocation path, reference receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Reference approval is not legal consent until authorized customer, privacy, trademark, contract, and regional reviews are completed and retained.
+
+## v1116 - First Pilot Expansion Rollout Reuse Market Pilot Customer Expansion Opportunity Board
+
+### Changes made
+- Added Customer Expansion Opportunity Board as the next governed customer-lifecycle room.
+- Added user demand, workflow demand, business-unit fit, expansion value case, service capacity, commercial shape, expansion sponsor, opportunity receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Expansion qualification remains advisory until CRM demand, capacity, pricing, tenant-policy, sponsor, and signed opportunity evidence is connected.
+
+## v1115 - First Pilot Expansion Rollout Reuse Market Pilot First Customer Renewal Decision Room
+
+### Changes made
+- Added First Customer Renewal Decision Room as the next governed customer-lifecycle room.
+- Added renewal evidence bundle, commercial terms, sponsor intent, service commitments, approval path, negotiation boundary, renewal close plan, decision receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The renewal decision room remains a static operating aid until live contract, usage, service, customer, procurement, and signature evidence is integrated.
+
 ## v1114 - First Pilot Expansion Rollout Reuse Market Pilot First Renewal Readiness Gate
 
 ### Changes made
