@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1084";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Paid Customer Activation Console";
+  const BUILD_VERSION = "v1089";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1084.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1084.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1089.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1089.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -10957,6 +10957,201 @@
         ["Success owner", "ownerCommand", 0.82, 5, "Success owner is accountable."],
         ["Renewal date", "reviewGuard", 0.8, 5, "Renewal date is visible."],
         ["Paid receipt", "guardClosure", 0.84, 6, "Paid activation receipt closes console."],
+      ],
+    },
+    {
+      key: "board-launch-authorization-room",
+      version: "v1085",
+      number: 1085,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Board Launch Authorization Room",
+      shortLabel: "Board Launch Authorization Room",
+      phase: "board launch authorization room",
+      track: "v1085 board launch authorization room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-board-launch-authorization-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-board-launch-authorization-room",
+      idSuffix: "BOARD-LAUNCH-AUTHORIZATION-ROOM",
+      scoreKey: "boardLaunchAuthorizationRoomScore",
+      decisionKey: "boardLaunchAuthorizationRoomDecision",
+      stateKey: "boardLaunchAuthorizationRoomState",
+      lineKey: "boardLaunchAuthorizationRoomLine",
+      primarySignal: "Pilot board launch authorization room",
+      primaryNote: "Converts paid activation proof into board authorization with activation proof, board memo, risk acceptance, security acceptance, revenue evidence, accountable owner, authorization date, and signed receipt.",
+      summary: "Convert paid activation proof into board authorization with activation proof, board memo, risk acceptance, security acceptance, revenue evidence, owner, date, and signed receipt.",
+      trackSummary: "Paid customer activation now becomes board launch authorization across activation proof, board memo, risk, security, revenue, owner, date, and receipt.",
+      stageSummary: "Board launch authorization now has activation proof, board memo, risk, security, revenue, owner, date, and signed receipt controls.",
+      openDecision: "Authorize launch",
+      guardedDecision: "Authorize guarded launch",
+      holdDecision: "Hold launch authorization",
+      repairDecision: "Repair board proof",
+      nextOpen: "Authorize launch and keep the board memo, accepted risks, security evidence, revenue proof, owner, date, and signed receipt together.",
+      nextGuarded: "Authorize a guarded launch while one board, risk, security, revenue, owner, date, or receipt lane stays watched.",
+      nextHold: "Hold launch authorization until paid activation, risk acceptance, security evidence, and revenue proof are clear.",
+      nextRepair: "Repair board authorization proof before the product trust story is published.",
+      axes: [
+        ["Activation proof", "proofGuard", 0.84, 6, "Paid activation proof is attached."],
+        ["Board memo", "sponsorGuard", 0.82, 5, "Board memo states the launch decision."],
+        ["Risk acceptance", "rollbackGuard", 0.82, 5, "Accepted risks and fallback are visible."],
+        ["Security acceptance", "tenantGuard", 0.84, 6, "Security evidence is accepted."],
+        ["Revenue evidence", "proofGuard", 0.82, 5, "Revenue proof supports authorization."],
+        ["Launch owner", "ownerCommand", 0.82, 5, "One launch owner is accountable."],
+        ["Authorization date", "reviewGuard", 0.8, 5, "Authorization date is recorded."],
+        ["Signed receipt", "guardClosure", 0.84, 6, "Signed receipt closes the room."],
+      ],
+    },
+    {
+      key: "product-trust-center-draft",
+      version: "v1086",
+      number: 1086,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Product Trust Center Draft",
+      shortLabel: "Product Trust Center Draft",
+      phase: "product trust center draft",
+      track: "v1086 product trust center draft",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-product-trust-center-draft",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-product-trust-center-draft",
+      idSuffix: "PRODUCT-TRUST-CENTER-DRAFT",
+      scoreKey: "productTrustCenterDraftScore",
+      decisionKey: "productTrustCenterDraftDecision",
+      stateKey: "productTrustCenterDraftState",
+      lineKey: "productTrustCenterDraftLine",
+      primarySignal: "Pilot product trust center draft",
+      primaryNote: "Creates a customer-safe trust draft with security posture, privacy boundaries, data handling, availability posture, incident support, compliance evidence, answer owner, and publication receipt.",
+      summary: "Create a customer-safe trust draft with security, privacy, data handling, availability, incident support, compliance evidence, answer owner, and publication receipt.",
+      trackSummary: "Board authorization now becomes a product trust draft across security, privacy, data, availability, incidents, compliance, ownership, and publication receipt.",
+      stageSummary: "Product trust center draft now has security, privacy, data, availability, incident, compliance, answer-owner, and publication controls.",
+      openDecision: "Open trust draft",
+      guardedDecision: "Open guarded trust draft",
+      holdDecision: "Hold trust publication",
+      repairDecision: "Repair trust evidence",
+      nextOpen: "Open the product trust center draft and keep customer-safe security, privacy, data, availability, incident, compliance, owner, and receipt answers together.",
+      nextGuarded: "Open a guarded trust draft while one security, privacy, data, availability, incident, compliance, owner, or receipt answer stays watched.",
+      nextHold: "Hold trust publication until security posture, privacy boundary, data handling, and incident support are clear.",
+      nextRepair: "Repair trust evidence before founder-led sales expands the launch story.",
+      axes: [
+        ["Security posture", "tenantGuard", 0.84, 6, "Customer-safe security posture is stated."],
+        ["Privacy boundary", "tenantGuard", 0.84, 6, "Privacy boundary is explicit."],
+        ["Data handling", "proofGuard", 0.82, 5, "Data handling answer has evidence."],
+        ["Availability posture", "supportGuard", 0.82, 5, "Availability posture is honest."],
+        ["Incident support", "supportGuard", 0.82, 5, "Incident response route is named."],
+        ["Compliance evidence", "proofGuard", 0.82, 5, "Compliance evidence is linked."],
+        ["Answer owner", "ownerCommand", 0.82, 5, "Each trust answer has an owner."],
+        ["Publication receipt", "guardClosure", 0.84, 6, "Publication receipt closes the draft."],
+      ],
+    },
+    {
+      key: "founder-sales-motion-console",
+      version: "v1087",
+      number: 1087,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Founder Sales Motion Console",
+      shortLabel: "Founder Sales Motion Console",
+      phase: "founder sales motion console",
+      track: "v1087 founder sales motion console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-founder-sales-motion-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-founder-sales-motion-console",
+      idSuffix: "FOUNDER-SALES-MOTION-CONSOLE",
+      scoreKey: "founderSalesMotionConsoleScore",
+      decisionKey: "founderSalesMotionConsoleDecision",
+      stateKey: "founderSalesMotionConsoleState",
+      lineKey: "founderSalesMotionConsoleLine",
+      primarySignal: "Pilot founder sales motion console",
+      primaryNote: "Turns launch proof into a founder-led sales motion with target account, qualification, discovery story, demo proof, value case, commercial ask, follow-up owner, and learning receipt.",
+      summary: "Turn launch proof into a founder-led sales motion with target account, qualification, discovery story, demo proof, value case, close ask, owner, and learning receipt.",
+      trackSummary: "Product trust proof now becomes a founder-led sales motion across target, qualification, discovery, demo, value, ask, owner, and learning receipt.",
+      stageSummary: "Founder sales motion now has target, qualification, discovery, demo, value, commercial ask, owner, and learning controls.",
+      openDecision: "Open sales motion",
+      guardedDecision: "Open guarded sales motion",
+      holdDecision: "Hold sales expansion",
+      repairDecision: "Repair sales proof",
+      nextOpen: "Open the founder sales motion and keep target account, qualification, discovery, demo proof, value case, commercial ask, owner, and learning receipt together.",
+      nextGuarded: "Open a guarded sales motion while one target, qualification, discovery, demo, value, ask, owner, or learning lane stays watched.",
+      nextHold: "Hold sales expansion until account fit, demo proof, value case, and commercial ask are clear.",
+      nextRepair: "Repair founder sales proof before the first customer success playbook is reused.",
+      axes: [
+        ["Target account", "sponsorGuard", 0.82, 5, "Target account and sponsor are named."],
+        ["Qualification", "reviewGuard", 0.82, 5, "Qualification questions are complete."],
+        ["Discovery story", "sponsorGuard", 0.82, 5, "Discovery story reflects customer pain."],
+        ["Demo proof", "proofGuard", 0.84, 6, "Demo proof shows the operating flow."],
+        ["Value case", "proofGuard", 0.82, 5, "Value case uses credible evidence."],
+        ["Commercial ask", "sponsorGuard", 0.82, 5, "Commercial ask is explicit."],
+        ["Follow-up owner", "ownerCommand", 0.82, 5, "One follow-up owner is accountable."],
+        ["Learning receipt", "guardClosure", 0.84, 6, "Learning receipt closes the motion."],
+      ],
+    },
+    {
+      key: "first-customer-success-playbook",
+      version: "v1088",
+      number: 1088,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Customer Success Playbook",
+      shortLabel: "First Customer Success Playbook",
+      phase: "first customer success playbook",
+      track: "v1088 first customer success playbook",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-success-playbook",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-success-playbook",
+      idSuffix: "FIRST-CUSTOMER-SUCCESS-PLAYBOOK",
+      scoreKey: "firstCustomerSuccessPlaybookScore",
+      decisionKey: "firstCustomerSuccessPlaybookDecision",
+      stateKey: "firstCustomerSuccessPlaybookState",
+      lineKey: "firstCustomerSuccessPlaybookLine",
+      primarySignal: "Pilot first customer success playbook",
+      primaryNote: "Turns first-customer experience into a reusable success playbook with kickoff plan, onboarding adoption, value milestone, risk response, support route, executive review, renewal owner, and playbook receipt.",
+      summary: "Turn first-customer experience into a reusable success playbook with kickoff, adoption, value milestone, risk response, support, executive review, renewal owner, and receipt.",
+      trackSummary: "Founder sales proof now becomes a customer success playbook across kickoff, adoption, value, risk, support, executive review, renewal owner, and receipt.",
+      stageSummary: "First customer success playbook now has kickoff, adoption, value, risk, support, executive review, renewal-owner, and receipt controls.",
+      openDecision: "Open success playbook",
+      guardedDecision: "Open guarded playbook",
+      holdDecision: "Hold playbook reuse",
+      repairDecision: "Repair success proof",
+      nextOpen: "Open the first customer success playbook and keep kickoff, adoption, value milestone, risk response, support, executive review, renewal owner, and receipt together.",
+      nextGuarded: "Open a guarded success playbook while one kickoff, adoption, value, risk, support, review, renewal, or receipt lane stays watched.",
+      nextHold: "Hold playbook reuse until kickoff ownership, adoption proof, value milestone, and risk response are clear.",
+      nextRepair: "Repair customer success proof before launch metrics become the operating truth.",
+      axes: [
+        ["Kickoff plan", "launchMoment", 0.84, 6, "Kickoff plan names the first week."],
+        ["Adoption rhythm", "reviewGuard", 0.82, 5, "Adoption rhythm is measurable."],
+        ["Value milestone", "proofGuard", 0.84, 6, "First value milestone has proof."],
+        ["Risk response", "rollbackGuard", 0.82, 5, "Risk response has an owner and fallback."],
+        ["Support route", "supportGuard", 0.82, 5, "Support route is simple and visible."],
+        ["Executive review", "sponsorGuard", 0.82, 5, "Executive review has a clear story."],
+        ["Renewal owner", "ownerCommand", 0.82, 5, "Renewal owner is accountable."],
+        ["Playbook receipt", "guardClosure", 0.84, 6, "Playbook receipt closes reuse."],
+      ],
+    },
+    {
+      key: "launch-metrics-control-room",
+      version: "v1089",
+      number: 1089,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Control Room",
+      shortLabel: "Launch Metrics Control Room",
+      phase: "launch metrics control room",
+      track: "v1089 launch metrics control room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-metrics-control-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-metrics-control-room",
+      idSuffix: "LAUNCH-METRICS-CONTROL-ROOM",
+      scoreKey: "launchMetricsControlRoomScore",
+      decisionKey: "launchMetricsControlRoomDecision",
+      stateKey: "launchMetricsControlRoomState",
+      lineKey: "launchMetricsControlRoomLine",
+      primarySignal: "Pilot launch metrics control room",
+      primaryNote: "Creates one launch cockpit across activation, adoption, time to value, support health, revenue signal, retention signal, learning quality, and signed metrics receipt.",
+      summary: "Create one launch cockpit across activation, adoption, time to value, support health, revenue, retention, learning quality, and signed metrics receipt.",
+      trackSummary: "Customer success proof now becomes a launch metrics control room across activation, adoption, value, support, revenue, retention, learning, and receipt.",
+      stageSummary: "Launch metrics control room now has activation, adoption, value, support, revenue, retention, learning, and receipt controls.",
+      openDecision: "Open metrics control",
+      guardedDecision: "Open guarded metrics",
+      holdDecision: "Hold metric claims",
+      repairDecision: "Repair metric proof",
+      nextOpen: "Open launch metrics control and keep activation, adoption, time to value, support, revenue, retention, learning quality, and signed receipt together.",
+      nextGuarded: "Open guarded launch metrics while one activation, adoption, value, support, revenue, retention, learning, or receipt lane stays watched.",
+      nextHold: "Hold launch metric claims until activation, adoption, value, and revenue evidence are clear.",
+      nextRepair: "Repair launch metric proof before paid-customer renewal monitoring begins.",
+      axes: [
+        ["Activation", "launchMoment", 0.84, 6, "Activation signal is measurable."],
+        ["Adoption", "reviewGuard", 0.82, 5, "Adoption signal has a review rhythm."],
+        ["Time to value", "proofGuard", 0.84, 6, "Time-to-value proof is visible."],
+        ["Support health", "supportGuard", 0.82, 5, "Support health is calm and owned."],
+        ["Revenue signal", "sponsorGuard", 0.82, 5, "Revenue signal is credible."],
+        ["Retention signal", "reviewGuard", 0.82, 5, "Retention signal has an owner and date."],
+        ["Learning quality", "tenantGuard", 0.82, 5, "Learning quality respects tenant boundaries."],
+        ["Metrics receipt", "guardClosure", 0.84, 6, "Signed metrics receipt closes the room."],
       ],
     },
   );
@@ -26577,6 +26772,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsControlRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerSuccessPlaybookPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderSalesMotionConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterDraftPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLaunchAuthorizationRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPaidCustomerActivationConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidenceLockerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryReadinessGatePreview(model, autopilot)}",
@@ -35416,6 +35616,61 @@ const state = {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "first-paid-customer-activation-console");
   }
 
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLaunchAuthorizationRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "board-launch-authorization-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLaunchAuthorizationRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "board-launch-authorization-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLaunchAuthorizationRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "board-launch-authorization-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterDraftSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "product-trust-center-draft");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterDraft(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "product-trust-center-draft");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterDraftPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "product-trust-center-draft");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFounderSalesMotionConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "founder-sales-motion-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFounderSalesMotionConsole(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "founder-sales-motion-console");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderSalesMotionConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "founder-sales-motion-console");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerSuccessPlaybookSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-customer-success-playbook");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerSuccessPlaybook(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-customer-success-playbook");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerSuccessPlaybookPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-success-playbook");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsControlRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-metrics-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsControlRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-metrics-control-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsControlRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-metrics-control-room");
+  }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
@@ -100225,9 +100480,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1085", "First Pilot Expansion Rollout Reuse Market Pilot Board Launch Authorization Room", "Convert paid activation proof into a board-safe launch authorization with owner, risk, evidence, revenue, and approval receipt."],
-      ["v1086", "First Pilot Expansion Rollout Reuse Market Pilot Product Trust Center Draft", "Prepare a lightweight trust center draft with security answers, privacy boundaries, uptime posture, support promise, and customer-safe evidence."],
-      ["v1087", "First Pilot Expansion Rollout Reuse Market Pilot Founder Sales Motion Console", "Turn launch proof into a founder-led sales motion with target account, qualification, demo script, proof pack, close ask, and learning receipt."],
+      ["v1090", "First Pilot Expansion Rollout Reuse Market Pilot Paid Customer Renewal Watch Room", "Watch paid-customer renewal intent with outcome proof, adoption health, sponsor response, support posture, value continuity, risk owner, renewal date, and decision receipt."],
+      ["v1091", "First Pilot Expansion Rollout Reuse Market Pilot Launch Partner Enablement Kit", "Prepare a controlled launch-partner kit with positioning, demo path, proof boundary, pricing guard, referral route, support promise, owner, and enablement receipt."],
+      ["v1092", "First Pilot Expansion Rollout Reuse Market Pilot Production Support Rhythm Console", "Establish the production support rhythm with intake, triage, severity, owner, response promise, resolution proof, learning handoff, and operating receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
