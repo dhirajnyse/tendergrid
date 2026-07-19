@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1134";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Board-Level Growth and Risk Council";
+  const BUILD_VERSION = "v1139";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Global Operating Model Approval Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1134.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1134.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1139.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1139.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -12907,6 +12907,201 @@
         ["Security, compliance, and trust","tenantGuard",0.96,10,"Identity, privacy, resilience, regulation, accessibility, evidence, audit, customer assurance, and exceptions are current."],
         ["Capital and investment","sponsorGuard",0.94,10,"Runway, hiring, infrastructure, market entry, product bets, risk reduction, returns, scenarios, and authority align."],
         ["Board decision receipt","guardClosure",0.98,10,"Signed receipt records posture, assumptions, evidence, dissent, limits, owners, investments, expiry, and next council."],
+      ],
+    },
+    {
+      key: "partner-ecosystem-launch-exchange",
+      version: "v1135",
+      number: 1135,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Partner Ecosystem Launch Exchange",
+      shortLabel: "Partner Ecosystem Launch Exchange",
+      phase: "partner ecosystem launch exchange",
+      track: "v1135 partner ecosystem launch exchange",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-partner-ecosystem-launch-exchange",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-partner-ecosystem-launch-exchange",
+      idSuffix: "PARTNER-ECOSYSTEM-LAUNCH-EXCHANGE",
+      scoreKey: "partnerEcosystemLaunchExchangeScore",
+      decisionKey: "partnerEcosystemLaunchExchangeDecision",
+      stateKey: "partnerEcosystemLaunchExchangeState",
+      lineKey: "partnerEcosystemLaunchExchangeLine",
+      primarySignal: "Pilot partner ecosystem launch exchange",
+      primaryNote: "Governs partner qualification, customer boundaries, delivery accountability, data access, commercials, support, quality, evidence, and signed ecosystem receipt.",
+      summary: "Govern partner delivery across qualification, customer boundaries, accountability, access, commercials, support, quality, evidence, and signed receipt.",
+      trackSummary: "Board-approved growth now gains a partner exchange where referrals and delivery capacity can expand without blurring customer ownership, data boundaries, service promises, or accountability.",
+      stageSummary: "Partner-led growth now has one exchange for qualification, customer boundaries, delivery roles, data access, commercials, support, quality, and receipt.",
+      openDecision: "Authorize partner launch",
+      guardedDecision: "Open guarded partner launch",
+      holdDecision: "Hold partner activation",
+      repairDecision: "Repair partner proof",
+      nextOpen: "Authorize partner launch and keep qualification, customer boundary, delivery accountability, data access, commercials, support, quality, and receipt together.",
+      nextGuarded: "Open a guarded partner launch while one bounded capability, access, commercial, support, quality, or customer condition stays watched.",
+      nextHold: "Hold partner activation until customer ownership, responsibilities, permissions, service promises, economics, evidence, and exit rights are explicit.",
+      nextRepair: "Repair partner proof before referrals, customer access, implementation work, support promises, invoices, claims, or market representation begin.",
+      axes: [
+        ["Partner qualification","reviewGuard",0.92,9,"Capability, experience, capacity, financial health, conduct, conflicts, regions, sectors, references, and approval are checked."],
+        ["Customer boundary","tenantGuard",0.98,10,"Customer ownership, consent, communication, representation, relationship data, decisions, complaints, and exit remain clear."],
+        ["Delivery accountability","ownerCommand",0.96,10,"Scope, RACI, milestones, dependencies, acceptance, change, escalation, warranty, and accountable owner are explicit."],
+        ["Data and access","tenantGuard",0.98,10,"Purpose, least privilege, tenant isolation, confidentiality, location, retention, revoke, deletion, and audit are controlled."],
+        ["Commercial terms","sponsorGuard",0.94,10,"Referral, resale, delivery, margin, currency, tax, invoice, payment, credit, liability, and termination align."],
+        ["Support and escalation","supportGuard",0.94,10,"Channels, hours, triage, ownership, handoff, severity, communication, access, resolution, and review are workable."],
+        ["Quality and evidence","proofGuard",0.94,10,"Standards, training, reviews, testing, acceptance, defects, corrections, customer outcomes, claims, and evidence stay traceable."],
+        ["Ecosystem receipt","guardClosure",0.98,10,"Signed receipt records partner, customer scope, roles, access, commercials, service, evidence, exceptions, expiry, and authority."],
+      ],
+    },
+    {
+      key: "global-service-reliability-council",
+      version: "v1136",
+      number: 1136,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Service Reliability Council",
+      shortLabel: "Global Service Reliability Council",
+      phase: "global service reliability council",
+      track: "v1136 global service reliability council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-service-reliability-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-service-reliability-council",
+      idSuffix: "GLOBAL-SERVICE-RELIABILITY-COUNCIL",
+      scoreKey: "globalServiceReliabilityCouncilScore",
+      decisionKey: "globalServiceReliabilityCouncilDecision",
+      stateKey: "globalServiceReliabilityCouncilState",
+      lineKey: "globalServiceReliabilityCouncilLine",
+      primarySignal: "Pilot global service reliability council",
+      primaryNote: "Governs global reliability across SLOs, regional health, dependencies, incidents, recovery, customer impact, reliability investment, authority, and signed receipt.",
+      summary: "Govern service reliability across SLOs, regions, dependencies, incidents, recovery, customer impact, investment, authority, and signed receipt.",
+      trackSummary: "Partner-enabled delivery now faces one global reliability council where service promises, regional health, dependency exposure, incident learning, recovery, and investment stay customer-grounded.",
+      stageSummary: "Global service reliability now has one council from SLO definition through regional health, incident learning, recovery, customer impact, investment, and receipt.",
+      openDecision: "Authorize reliability posture",
+      guardedDecision: "Open guarded reliability posture",
+      holdDecision: "Hold reliability promise",
+      repairDecision: "Repair reliability proof",
+      nextOpen: "Authorize the reliability posture and keep SLOs, regions, dependencies, incidents, recovery, customer impact, investment, authority, and receipt together.",
+      nextGuarded: "Open a guarded reliability posture while one contained regional, dependency, capacity, incident, recovery, or customer condition stays watched.",
+      nextHold: "Hold reliability promises until service levels, measurement, ownership, capacity, dependencies, response, recovery, and communication are supportable.",
+      nextRepair: "Repair reliability proof before uptime, recovery, resilience, performance, regional coverage, or customer-impact claims are published or contracted.",
+      axes: [
+        ["Service objectives","launchMoment",0.96,10,"Critical journeys, indicators, targets, windows, exclusions, error budgets, ownership, reporting, and customer promise align."],
+        ["Regional health","reviewGuard",0.94,10,"Availability, latency, errors, saturation, data, jobs, integrations, capacity, and customer experience are region-visible."],
+        ["Dependency risk","tenantGuard",0.94,10,"Cloud, identity, database, payment, messaging, analytics, support, suppliers, concentration, and fallback are mapped."],
+        ["Incident learning","proofGuard",0.94,10,"Detection, severity, command, timeline, impact, containment, cause, correction, communication, and learning are evidenced."],
+        ["Recovery readiness","rollbackGuard",0.98,10,"Backup, restore, rollback, failover, regional loss, data integrity, access, communication, and return are rehearsed."],
+        ["Customer impact","supportGuard",0.94,10,"Affected tenants, workflows, data, commitments, workarounds, updates, recovery, credits, complaints, and follow-up are clear."],
+        ["Reliability investment","sponsorGuard",0.92,9,"Risk reduction, capacity, architecture, tooling, staffing, suppliers, cost, timing, expected benefit, and authority align."],
+        ["Reliability receipt","guardClosure",0.98,10,"Signed receipt records posture, gaps, exceptions, evidence, customer impact, investments, owners, expiry, and next council."],
+      ],
+    },
+    {
+      key: "enterprise-procurement-acceleration-room",
+      version: "v1137",
+      number: 1137,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Procurement Acceleration Room",
+      shortLabel: "Enterprise Procurement Acceleration Room",
+      phase: "enterprise procurement acceleration room",
+      track: "v1137 enterprise procurement acceleration room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-procurement-acceleration-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-procurement-acceleration-room",
+      idSuffix: "ENTERPRISE-PROCUREMENT-ACCELERATION-ROOM",
+      scoreKey: "enterpriseProcurementAccelerationRoomScore",
+      decisionKey: "enterpriseProcurementAccelerationRoomDecision",
+      stateKey: "enterpriseProcurementAccelerationRoomState",
+      lineKey: "enterpriseProcurementAccelerationRoomLine",
+      primarySignal: "Pilot enterprise procurement acceleration room",
+      primaryNote: "Accelerates enterprise buying through requirements, security, privacy, legal, commercial, architecture, implementation, approvals, evidence, and signed procurement receipt.",
+      summary: "Accelerate enterprise procurement across requirements, security, privacy, legal, commercial, architecture, implementation, approvals, and signed receipt.",
+      trackSummary: "Reliability evidence now enters one procurement room where buyer requirements, trust reviews, commercials, integration, implementation, approvals, and proof move without hidden handoffs.",
+      stageSummary: "Enterprise buying now has one room for requirements, security, privacy, legal, commercials, integration, implementation, approvals, and receipt.",
+      openDecision: "Authorize procurement path",
+      guardedDecision: "Open guarded procurement path",
+      holdDecision: "Hold procurement commitment",
+      repairDecision: "Repair buyer proof",
+      nextOpen: "Authorize the procurement path and keep requirements, security, privacy, legal, commercial, architecture, implementation, approvals, and receipt together.",
+      nextGuarded: "Open a guarded procurement path while one bounded buyer, security, privacy, legal, commercial, technical, or approval condition stays watched.",
+      nextHold: "Hold procurement commitments until requirements, evidence, exceptions, obligations, pricing, implementation, service, and authority are decision-ready.",
+      nextRepair: "Repair buyer proof before questionnaires, contracts, pricing, architecture, delivery dates, service promises, or approval requests are submitted.",
+      axes: [
+        ["Buyer requirements","reviewGuard",0.92,9,"Business outcome, users, workflows, data, integrations, controls, service, reporting, acceptance, and priority are confirmed."],
+        ["Security due diligence","proofGuard",0.96,10,"Architecture, identity, encryption, testing, vulnerabilities, logging, incidents, suppliers, recovery, and evidence are current."],
+        ["Privacy and data","tenantGuard",0.98,10,"Roles, purpose, categories, location, transfer, retention, deletion, rights, subprocessors, and impact review align."],
+        ["Legal and commercial","sponsorGuard",0.94,10,"Terms, liability, indemnity, IP, confidentiality, warranty, pricing, tax, payment, renewal, and termination are owned."],
+        ["Architecture and integration","launchMoment",0.92,9,"Environments, APIs, identity, import, export, network, dependencies, testing, support, and change path are feasible."],
+        ["Implementation and service","supportGuard",0.94,10,"Plan, resources, data, configuration, training, acceptance, support, SLOs, success, and governance match the offer."],
+        ["Approval path","ownerCommand",0.94,10,"Buyer, seller, security, privacy, legal, finance, procurement, technical, executive, and signature authorities are sequenced."],
+        ["Procurement receipt","guardClosure",0.98,10,"Signed receipt records requirements, evidence, exceptions, obligations, commercials, approvals, owners, dates, and next step."],
+      ],
+    },
+    {
+      key: "multi-market-unit-economics-command",
+      version: "v1138",
+      number: 1138,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Market Unit Economics Command",
+      shortLabel: "Multi-Market Unit Economics Command",
+      phase: "multi market unit economics command",
+      track: "v1138 multi market unit economics command",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-market-unit-economics-command",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-market-unit-economics-command",
+      idSuffix: "MULTI-MARKET-UNIT-ECONOMICS-COMMAND",
+      scoreKey: "multiMarketUnitEconomicsCommandScore",
+      decisionKey: "multiMarketUnitEconomicsCommandDecision",
+      stateKey: "multiMarketUnitEconomicsCommandState",
+      lineKey: "multiMarketUnitEconomicsCommandLine",
+      primarySignal: "Pilot multi market unit economics command",
+      primaryNote: "Governs pricing, acquisition, implementation, platform, support, retention, expansion, cash, downside scenarios, authority, and signed economics receipt by market.",
+      summary: "Govern multi-market economics across pricing, acquisition, implementation, platform, support, retention, expansion, cash, scenarios, and signed receipt.",
+      trackSummary: "Procurement reality now reaches one economics command where every market must show sustainable pricing, delivery, platform, service, retention, cash, and downside evidence.",
+      stageSummary: "Multi-market growth now has one economics command from pricing and acquisition through delivery, platform, service, retention, cash, scenarios, and receipt.",
+      openDecision: "Authorize market economics",
+      guardedDecision: "Open guarded market economics",
+      holdDecision: "Hold market scaling",
+      repairDecision: "Repair economics proof",
+      nextOpen: "Authorize market economics and keep pricing, acquisition, implementation, platform, support, retention, expansion, cash, scenarios, and receipt together.",
+      nextGuarded: "Open guarded market economics while one bounded pricing, cost, demand, delivery, service, retention, currency, tax, or cash condition stays watched.",
+      nextHold: "Hold market scaling when growth depends on unsupported price, hidden delivery effort, weak retention, unreliable expansion, excessive concentration, or cash strain.",
+      nextRepair: "Repair economics proof before price, discount, hiring, partner, infrastructure, market-entry, revenue, margin, or funding decisions are approved.",
+      axes: [
+        ["Pricing and packaging","launchMoment",0.92,9,"Segment, value metric, plan, usage, seats, services, discount, currency, tax, willingness, and guardrails align."],
+        ["Acquisition economics","reviewGuard",0.9,9,"Demand source, conversion, sales cycle, proof cost, partner cost, commission, acquisition cost, payback, and quality are visible."],
+        ["Implementation economics","ownerCommand",0.92,9,"Discovery, migration, configuration, integration, training, acceptance, rework, partner effort, and margin are measured."],
+        ["Platform economics","tenantGuard",0.92,9,"Compute, storage, database, network, AI, monitoring, backup, regional overhead, support tooling, and scale curve are mapped."],
+        ["Service economics","supportGuard",0.92,9,"Support, success, security review, compliance, incident, customization, language, region, SLA, and escalation costs are honest."],
+        ["Retention and expansion","proofGuard",0.94,10,"Activation, accepted value, churn, renewal, expansion, references, concentration, cohort behavior, and confidence are evidenced."],
+        ["Cash and downside","rollbackGuard",0.94,10,"Billing terms, collection, refunds, tax, currency, working capital, burn, runway, sensitivities, and stop thresholds are explicit."],
+        ["Economics receipt","guardClosure",0.98,10,"Signed receipt records market, assumptions, evidence, scenarios, limits, decisions, owners, expiry, and next review."],
+      ],
+    },
+    {
+      key: "global-operating-model-approval-council",
+      version: "v1139",
+      number: 1139,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Operating Model Approval Council",
+      shortLabel: "Global Operating Model Approval Council",
+      phase: "global operating model approval council",
+      track: "v1139 global operating model approval council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-operating-model-approval-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-operating-model-approval-council",
+      idSuffix: "GLOBAL-OPERATING-MODEL-APPROVAL-COUNCIL",
+      scoreKey: "globalOperatingModelApprovalCouncilScore",
+      decisionKey: "globalOperatingModelApprovalCouncilDecision",
+      stateKey: "globalOperatingModelApprovalCouncilState",
+      lineKey: "globalOperatingModelApprovalCouncilLine",
+      primarySignal: "Pilot global operating model approval council",
+      primaryNote: "Approves operating scope, decision rights, ownership, regional and tenant boundaries, partner delivery, service model, economics, investment, authority, and signed receipt.",
+      summary: "Approve the global operating model across scope, decision rights, ownership, boundaries, partner delivery, service, economics, investment, and signed receipt.",
+      trackSummary: "Multi-market economics now culminate in one operating-model council where decision rights, ownership, customer boundaries, partners, service promises, investment, and accountability are approved together.",
+      stageSummary: "Global scale now has one operating-model council for scope, decision rights, ownership, boundaries, partner delivery, service, economics, investment, and receipt.",
+      openDecision: "Authorize operating model",
+      guardedDecision: "Open guarded operating model",
+      holdDecision: "Hold operating model",
+      repairDecision: "Repair operating proof",
+      nextOpen: "Authorize the operating model and keep scope, decision rights, ownership, boundaries, partner delivery, service, economics, investment, and receipt together.",
+      nextGuarded: "Open a guarded operating model while one bounded role, region, tenant, partner, service, economic, governance, or investment condition stays watched.",
+      nextHold: "Hold the operating model until authority, accountability, customer ownership, tenant and regional boundaries, service promises, economics, and escalation are coherent.",
+      nextRepair: "Repair operating proof before organizational design, hiring, delegation, partner mandates, regional launch, service commitments, or capital allocation are approved.",
+      axes: [
+        ["Operating scope","reviewGuard",0.94,10,"Products, customers, segments, regions, entities, channels, services, environments, exclusions, and priorities are bounded."],
+        ["Decision rights","sponsorGuard",0.98,10,"Propose, review, approve, execute, stop, escalate, override, appeal, audit, and expiry authorities are named."],
+        ["Product and platform ownership","ownerCommand",0.96,10,"Roadmap, architecture, data, AI, security, reliability, releases, operations, evidence, and outcomes have accountable owners."],
+        ["Regional and tenant model","tenantGuard",0.98,10,"Entities, residency, localization, access, policy, billing, support, isolation, exceptions, and governance align."],
+        ["Partner delivery model","proofGuard",0.94,10,"Qualification, customer boundary, RACI, access, quality, commercial, support, audit, exit, and accountability are explicit."],
+        ["Service and support model","supportGuard",0.96,10,"Onboarding, success, support, SLOs, incidents, communications, escalation, recovery, coverage, and capacity match promises."],
+        ["Economics and investment","rollbackGuard",0.94,10,"Pricing, margin, cash, capacity, people, platform, trust, reliability, markets, scenarios, and stop thresholds align."],
+        ["Operating approval receipt","guardClosure",0.98,10,"Signed receipt records model, authority, assumptions, boundaries, exceptions, investments, owners, expiry, and next council."],
       ],
     },
   );
@@ -28527,6 +28722,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingModelApprovalCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiMarketUnitEconomicsCommandPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseProcurementAccelerationRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalServiceReliabilityCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerEcosystemLaunchExchangePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLevelGrowthAndRiskCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAdaptiveCustomerValueNetworkPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalComplianceAndTrustPassportPreview(model, autopilot)}",
@@ -37971,6 +38171,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLevelGrowthAndRiskCouncilPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "board-level-growth-and-risk-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerEcosystemLaunchExchangeSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "partner-ecosystem-launch-exchange");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerEcosystemLaunchExchange(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "partner-ecosystem-launch-exchange");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerEcosystemLaunchExchangePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "partner-ecosystem-launch-exchange");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalServiceReliabilityCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-service-reliability-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalServiceReliabilityCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-service-reliability-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalServiceReliabilityCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-service-reliability-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseProcurementAccelerationRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "enterprise-procurement-acceleration-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseProcurementAccelerationRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "enterprise-procurement-acceleration-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseProcurementAccelerationRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "enterprise-procurement-acceleration-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiMarketUnitEconomicsCommandSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-market-unit-economics-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiMarketUnitEconomicsCommand(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-market-unit-economics-command");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiMarketUnitEconomicsCommandPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-market-unit-economics-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingModelApprovalCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-operating-model-approval-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingModelApprovalCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-operating-model-approval-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalOperatingModelApprovalCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-operating-model-approval-council");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -102782,9 +103042,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1135", "First Pilot Expansion Rollout Reuse Market Pilot Partner Ecosystem Launch Exchange", "Govern partner referrals, delivery roles, customer boundaries, commercial terms, support, evidence, risk, and signed ecosystem receipt."],
-      ["v1136", "First Pilot Expansion Rollout Reuse Market Pilot Global Service Reliability Council", "Govern service reliability across SLOs, regions, dependencies, incidents, recovery, customer impact, investment, and signed reliability receipt."],
-      ["v1137", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Procurement Acceleration Room", "Accelerate enterprise buying across requirements, security, privacy, legal, commercial, implementation, approvals, and signed procurement receipt."],
+      ["v1140", "First Pilot Expansion Rollout Reuse Market Pilot Global Operating Rhythm Command", "Turn the approved model into daily, weekly, monthly, quarterly, incident, customer, board, and audit rhythms with a signed cadence receipt."],
+      ["v1141", "First Pilot Expansion Rollout Reuse Market Pilot Customer and Partner Risk Network", "Govern connected customer and partner risk across concentration, dependencies, service, trust, commercials, incidents, recovery, and signed network receipt."],
+      ["v1142", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Value Realization Ledger", "Trace promised value into adopted workflows, accepted outcomes, evidence, economics, renewals, expansions, corrections, and signed realization receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

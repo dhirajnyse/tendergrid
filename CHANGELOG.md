@@ -1,5 +1,118 @@
 # Changelog
 
+## v1139 - First Pilot Expansion Rollout Reuse Market Pilot Global Operating Model Approval Council
+
+### Changes made
+- Added Global Operating Model Approval Council as the next governed ecosystem-and-operating-model room.
+- Added operating scope, decision rights, product and platform ownership, regional and tenant model, partner delivery model, service and support model, economics and investment, operating approval receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed local HTTP smoke checks for `/`, `app.min.js?v=1139.1`, and `styles.min.css?v=1139.1` with `200` responses.
+- Passed desktop visual QA at `1280x720`: Build Phase exposed v1139 plus the v1140-v1142 queue, Command preserved the v1137-v1139 continuity rail, no horizontal overflow or console errors appeared, and the council copy receipt was confirmed in 848 ms including the observation pause.
+- Passed mobile visual QA at `390x844` (375 px content width): the same queue and continuity checks passed without horizontal overflow or console errors, and the council copy receipt was confirmed in 729 ms including the observation pause.
+
+### Known risks
+- Operating-model approval remains illustrative until verified legal entities, organization design, production controls, customer contracts, regional obligations, financials, and accountable executives exist.
+
+## v1138 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Market Unit Economics Command
+
+### Changes made
+- Added Multi-Market Unit Economics Command as the next governed ecosystem-and-operating-model room.
+- Added pricing and packaging, acquisition economics, implementation economics, platform economics, service economics, retention and expansion, cash and downside, economics receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Economics remain illustrative until verified production usage, accounting, tax, sales, delivery, support, retention, cash, and market data are connected and reviewed.
+
+## v1137 - First Pilot Expansion Rollout Reuse Market Pilot Enterprise Procurement Acceleration Room
+
+### Changes made
+- Added Enterprise Procurement Acceleration Room as the next governed ecosystem-and-operating-model room.
+- Added buyer requirements, security due diligence, privacy and data, legal and commercial, architecture and integration, implementation and service, approval path, procurement receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The room cannot replace qualified security, privacy, legal, finance, procurement, architecture, or customer approval and requires current production evidence for real deals.
+
+## v1136 - First Pilot Expansion Rollout Reuse Market Pilot Global Service Reliability Council
+
+### Changes made
+- Added Global Service Reliability Council as the next governed ecosystem-and-operating-model room.
+- Added service objectives, regional health, dependency risk, incident learning, recovery readiness, customer impact, reliability investment, reliability receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Reliability remains a governance model until production telemetry, SLO measurement, incident response, backups, recovery drills, regional infrastructure, and customer communications are live.
+
+## v1135 - First Pilot Expansion Rollout Reuse Market Pilot Partner Ecosystem Launch Exchange
+
+### Changes made
+- Added Partner Ecosystem Launch Exchange as the next governed ecosystem-and-operating-model room.
+- Added partner qualification, customer boundary, delivery accountability, data and access, commercial terms, support and escalation, quality and evidence, ecosystem receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Partner exchange controls remain illustrative until real partner due diligence, contracts, customer consent, access enforcement, service operations, billing, and audit evidence exist.
+
 ## v1134 - First Pilot Expansion Rollout Reuse Market Pilot Board-Level Growth and Risk Council
 
 ### Changes made
