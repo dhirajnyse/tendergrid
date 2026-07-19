@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1144";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review";
+  const BUILD_VERSION = "v1149";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Operating Outcome Accountability Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1144.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1144.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1149.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1149.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -13298,6 +13298,156 @@
         ["Capital and scenarios","sponsorGuard",0.96,10,"Revenue, margin, cash, runway, investments, hiring, infrastructure, markets, sensitivities, options, and stop thresholds align."],
         ["CEO decision receipt","guardClosure",0.98,10,"Signed receipt records posture, assumptions, evidence, dissent, decisions, investments, owners, limits, expiry, and next review."],
       ],
+    },
+    {
+      key: "enterprise-operating-scenario-simulator",
+      version: "v1145",
+      number: 1145,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Operating Scenario Simulator",
+      shortLabel: "Enterprise Operating Scenario Simulator",
+      phase: "enterprise operating scenario simulator",
+      track: "v1145 enterprise operating scenario simulator",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-operating-scenario-simulator",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-operating-scenario-simulator",
+      idSuffix: "ENTERPRISE-OPERATING-SCENARIO-SIMULATOR",
+      scoreKey: "enterpriseOperatingScenarioSimulatorScore",
+      decisionKey: "enterpriseOperatingScenarioSimulatorDecision",
+      stateKey: "enterpriseOperatingScenarioSimulatorState",
+      lineKey: "enterpriseOperatingScenarioSimulatorLine",
+      primarySignal: "Pilot enterprise operating scenario simulator",
+      primaryNote: "Compares strategic choices before growth, capacity, customer, product, risk, and capital commitments become difficult to reverse.",
+      summary: "Compare baseline, growth, capacity, customer, market, product, AI, risk, resilience, capital, and stop-rule scenarios before executive commitment.",
+      trackSummary: "CEO portfolio review now opens an enterprise scenario simulator where assumptions, growth, capacity, customers, markets, product, AI, risk, resilience, capital, and stop rules reconcile.",
+      stageSummary: "Executive review now compares bounded operating scenarios across assumptions, growth, capacity, customers, product, AI, risk, resilience, capital, and receipt.",
+      openDecision: "Select operating scenario",
+      guardedDecision: "Select guarded scenario",
+      holdDecision: "Hold scenario decision",
+      repairDecision: "Repair scenario assumptions",
+      nextOpen: "Select the operating scenario and keep assumptions, growth, capacity, customers, product, AI, risk, resilience, capital, stop rules, and receipt together.",
+      nextGuarded: "Select a guarded scenario while one bounded assumption, capacity, market, product, risk, or capital condition stays watched.",
+      nextHold: "Hold the scenario decision when assumptions, customer evidence, capacity, downside, cash, authority, or stop rules do not reconcile.",
+      nextRepair: "Repair scenario assumptions before investment, hiring, product, market, customer, service, or capital commitments are released.",
+      axes: [["Baseline and assumptions","reviewGuard",0.96,10,"Current performance, data quality, external conditions, constraints, dependencies, ranges, confidence, and owners are explicit."],["Growth scenario","sponsorGuard",0.94,10,"Demand, conversion, pricing, adoption, retention, expansion, revenue, margin, timing, and execution needs are compared."],["Capacity scenario","supportGuard",0.96,10,"People, platform, implementation, service, support, security, partners, regions, and headroom match each scenario."],["Customer and market scenario","tenantGuard",0.94,10,"Segments, needs, outcomes, concentration, geographies, regulation, competition, channels, and customer boundaries are tested."],["Product and AI scenario","proofGuard",0.96,10,"Roadmap, architecture, data, AI value, model safety, quality, debt, dependencies, release path, and learning are compared."],["Risk and resilience scenario","rollbackGuard",0.98,10,"Operational, security, privacy, compliance, financial, partner, concentration, incident, recovery, and downside paths are stressed."],["Capital and stop rules","ownerCommand",0.96,10,"Cash, runway, investment, hiring, infrastructure, options, triggers, limits, stop thresholds, and decision authority are named."],["Scenario decision receipt","guardClosure",0.98,10,"Signed receipt records scenario, assumptions, evidence, sensitivity, dissent, decision, owners, limits, expiry, and next review."]],
+    },
+    {
+      key: "global-capital-and-capacity-allocation-board",
+      version: "v1146",
+      number: 1146,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Capital and Capacity Allocation Board",
+      shortLabel: "Global Capital and Capacity Allocation Board",
+      phase: "global capital and capacity allocation board",
+      track: "v1146 global capital and capacity allocation board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-capital-and-capacity-allocation-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-capital-and-capacity-allocation-board",
+      idSuffix: "GLOBAL-CAPITAL-AND-CAPACITY-ALLOCATION-BOARD",
+      scoreKey: "globalCapitalAndCapacityAllocationBoardScore",
+      decisionKey: "globalCapitalAndCapacityAllocationBoardDecision",
+      stateKey: "globalCapitalAndCapacityAllocationBoardState",
+      lineKey: "globalCapitalAndCapacityAllocationBoardLine",
+      primarySignal: "Pilot global capital and capacity allocation board",
+      primaryNote: "Allocates scarce cash, people, platform, trust, service, partner, and market capacity against verified value and downside.",
+      summary: "Allocate customer, market, product, platform, reliability, trust, service, delivery, people, partner, cash, and option capacity against value and downside.",
+      trackSummary: "Selected enterprise scenarios now reach one allocation board where customer value, markets, product, platform, trust, service, people, partners, cash, options, and constraints reconcile.",
+      stageSummary: "Scenario choice now becomes constrained allocation across customer value, markets, product, platform, trust, service, people, partners, cash, options, and receipt.",
+      openDecision: "Authorize allocation posture",
+      guardedDecision: "Authorize guarded allocation",
+      holdDecision: "Hold allocation",
+      repairDecision: "Repair allocation evidence",
+      nextOpen: "Authorize the allocation posture and keep customer value, markets, product, platform, trust, service, people, partners, cash, options, and receipt together.",
+      nextGuarded: "Authorize guarded allocation while one bounded demand, capacity, dependency, risk, funding, or evidence condition stays watched.",
+      nextHold: "Hold allocation when value, customer priority, capacity, trust, delivery, people, partner, cash, or downside do not reconcile.",
+      nextRepair: "Repair allocation evidence before budgets, hiring, infrastructure, market, product, partner, or customer capacity is committed.",
+      axes: [["Customer value priority","proofGuard",0.96,10,"Accepted outcomes, urgency, adoption, retention, expansion, concentration, service need, evidence, and value at risk determine priority."],["Market allocation","reviewGuard",0.94,10,"Countries, sectors, segments, routes, regulatory needs, localization, demand, economics, sequencing, and exit options are compared."],["Product and platform allocation","tenantGuard",0.96,10,"Roadmap, architecture, data, AI, quality, debt, scale, integrations, reliability, and tenant boundaries receive explicit capacity."],["Reliability and trust allocation","rollbackGuard",0.98,10,"Security, privacy, compliance, resilience, observability, recovery, assurance, incidents, and trust debt are funded before exposure widens."],["Service and delivery allocation","supportGuard",0.96,10,"Implementation, onboarding, support, success, service levels, regional coverage, backlog, headroom, and recovery capacity match commitments."],["People and partner allocation","ownerCommand",0.94,10,"Leadership, skills, teams, succession, incentives, contractors, partners, accountability, dependencies, and change load are visible."],["Cash and option reserve","sponsorGuard",0.96,10,"Cash, runway, margin, contingencies, staged funding, option reserve, sensitivity, stop rules, return threshold, and authority reconcile."],["Allocation receipt","guardClosure",0.98,10,"Signed receipt records priorities, trade-offs, funding, capacity, dependencies, risks, owners, limits, expiry, and next review."]],
+    },
+    {
+      key: "annual-strategy-renewal-council",
+      version: "v1147",
+      number: 1147,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Annual Strategy Renewal Council",
+      shortLabel: "Annual Strategy Renewal Council",
+      phase: "annual strategy renewal council",
+      track: "v1147 annual strategy renewal council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-annual-strategy-renewal-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-annual-strategy-renewal-council",
+      idSuffix: "ANNUAL-STRATEGY-RENEWAL-COUNCIL",
+      scoreKey: "annualStrategyRenewalCouncilScore",
+      decisionKey: "annualStrategyRenewalCouncilDecision",
+      stateKey: "annualStrategyRenewalCouncilState",
+      lineKey: "annualStrategyRenewalCouncilLine",
+      primarySignal: "Pilot annual strategy renewal council",
+      primaryNote: "Renews, changes, retires, or defers strategy using realized value, operating evidence, scenarios, risk appetite, capacity, and alternatives.",
+      summary: "Renew strategy across thesis, realized value, customers, markets, product, AI, risk, resilience, organization, capacity, capital, alternatives, and signed receipt.",
+      trackSummary: "Capital and capacity allocation now returns to one annual strategy council where the thesis, realized value, customer evidence, product, AI, risk, organization, capacity, capital, and alternatives renew.",
+      stageSummary: "Allocation evidence now renews strategy across thesis, realized value, customers, markets, product, AI, risk, organization, capacity, capital, alternatives, and receipt.",
+      openDecision: "Renew strategy",
+      guardedDecision: "Renew guarded strategy",
+      holdDecision: "Hold strategy renewal",
+      repairDecision: "Repair strategy evidence",
+      nextOpen: "Renew the strategy and keep thesis, realized value, customer evidence, product, AI, risk, organization, capacity, capital, alternatives, and receipt together.",
+      nextGuarded: "Renew a guarded strategy while one bounded evidence, customer, product, risk, capacity, capital, or execution condition stays watched.",
+      nextHold: "Hold strategy renewal when thesis, realized value, customers, product, risk, organization, capacity, capital, or alternatives do not reconcile.",
+      nextRepair: "Repair strategy evidence before annual targets, investments, markets, product scope, capacity, or executive commitments are renewed.",
+      axes: [["Strategy thesis","reviewGuard",0.96,10,"Purpose, customer problem, differentiation, advantage, scope, assumptions, constraints, horizon, success criteria, and non-goals remain valid."],["Realized value","proofGuard",0.98,10,"Promised, adopted, accepted, attributed, economic, renewed, expanded, corrected, and at-risk value are reconciled."],["Customer and market evidence","sponsorGuard",0.96,10,"Demand, outcomes, adoption, trust, service, retention, concentration, competition, regulation, and market learning support renewal."],["Product and AI evidence","tenantGuard",0.96,10,"Roadmap results, quality, architecture, data, AI value, safety, monitoring, releases, debt, and learning support the thesis."],["Risk and resilience","rollbackGuard",0.98,10,"Risk appetite, incidents, controls, security, privacy, compliance, concentration, recovery, stress cases, and residual exposure align."],["Organization and capacity","supportGuard",0.96,10,"Decision rights, leadership, skills, teams, partners, service capacity, platform headroom, incentives, succession, and change load fit."],["Capital and alternatives","ownerCommand",0.96,10,"Revenue, margin, cash, runway, return, sensitivities, staged investment, alternatives, opportunity cost, stop rules, and authority reconcile."],["Strategy renewal receipt","guardClosure",0.98,10,"Signed receipt records renewed thesis, evidence, changes, retirements, dissent, commitments, owners, limits, expiry, and next review."]],
+    },
+    {
+      key: "executive-commitment-release-gate",
+      version: "v1148",
+      number: 1148,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Executive Commitment Release Gate",
+      shortLabel: "Executive Commitment Release Gate",
+      phase: "executive commitment release gate",
+      track: "v1148 executive commitment release gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-executive-commitment-release-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-executive-commitment-release-gate",
+      idSuffix: "EXECUTIVE-COMMITMENT-RELEASE-GATE",
+      scoreKey: "executiveCommitmentReleaseGateScore",
+      decisionKey: "executiveCommitmentReleaseGateDecision",
+      stateKey: "executiveCommitmentReleaseGateState",
+      lineKey: "executiveCommitmentReleaseGateLine",
+      primarySignal: "Pilot executive commitment release gate",
+      primaryNote: "Prevents strategy from becoming an external promise until scope, proof, capacity, downside, authority, communication, and rollback are explicit.",
+      summary: "Release executive commitments only after definition, evidence, customer boundary, capacity, dependencies, downside, authority, dissent, communication, rollback, and receipt align.",
+      trackSummary: "Renewed strategy now reaches one commitment release gate where definition, evidence, customer boundary, capacity, dependencies, downside, authority, dissent, communication, rollback, and receipt align.",
+      stageSummary: "Renewed strategy now becomes a releasable commitment only after scope, evidence, boundaries, capacity, dependencies, downside, authority, communication, rollback, and receipt align.",
+      openDecision: "Release executive commitment",
+      guardedDecision: "Release guarded commitment",
+      holdDecision: "Hold commitment release",
+      repairDecision: "Repair commitment proof",
+      nextOpen: "Release the executive commitment and keep definition, evidence, boundaries, capacity, dependencies, downside, authority, communication, rollback, and receipt together.",
+      nextGuarded: "Release a guarded commitment while one bounded assumption, capacity, dependency, risk, communication, or evidence condition stays watched.",
+      nextHold: "Hold commitment release when scope, evidence, customer boundary, capacity, dependency, downside, authority, communication, or rollback do not reconcile.",
+      nextRepair: "Repair commitment proof before targets, customer promises, hiring, investment, market, product, partner, or public statements are released.",
+      axes: [["Commitment definition","reviewGuard",0.98,10,"Outcome, scope, beneficiaries, exclusions, baseline, target, timing, dependencies, owner, and success rule are unambiguous."],["Evidence threshold","proofGuard",0.98,10,"Source, quality, freshness, attribution, uncertainty, sensitivity, counterevidence, assumptions, gaps, and acceptance threshold are explicit."],["Customer and market boundary","tenantGuard",0.98,10,"Customers, segments, markets, countries, sectors, channels, contracts, consent, regulatory limits, and claims stay bounded."],["Capacity and dependency","supportGuard",0.98,10,"People, product, platform, implementation, service, support, security, partners, funding, and critical dependencies can carry the promise."],["Risk and downside","rollbackGuard",0.98,10,"Failure modes, customer harm, security, privacy, compliance, financial, concentration, contingency, recovery, and stop thresholds are accepted."],["Authority and dissent","ownerCommand",0.98,10,"Decision rights, approvers, accountable owner, consulted experts, conflicts, dissent, conditions, escalation, expiry, and overrides are recorded."],["Communication and rollback","sponsorGuard",0.98,10,"Internal and external message, assumptions, limitations, milestones, change control, monitoring, correction, withdrawal, and rollback are ready."],["Commitment release receipt","guardClosure",0.99,10,"Signed receipt records commitment, evidence, boundaries, resources, risks, authority, dissent, communication, rollback, expiry, and next review."]],
+    },
+    {
+      key: "operating-outcome-accountability-ledger",
+      version: "v1149",
+      number: 1149,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Operating Outcome Accountability Ledger",
+      shortLabel: "Operating Outcome Accountability Ledger",
+      phase: "operating outcome accountability ledger",
+      track: "v1149 operating outcome accountability ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-operating-outcome-accountability-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-operating-outcome-accountability-ledger",
+      idSuffix: "OPERATING-OUTCOME-ACCOUNTABILITY-LEDGER",
+      scoreKey: "operatingOutcomeAccountabilityLedgerScore",
+      decisionKey: "operatingOutcomeAccountabilityLedgerDecision",
+      stateKey: "operatingOutcomeAccountabilityLedgerState",
+      lineKey: "operatingOutcomeAccountabilityLedgerLine",
+      primarySignal: "Pilot operating outcome accountability ledger",
+      primaryNote: "Keeps every released executive commitment connected to an owner, milestone, outcome, customer effect, economics, risk, intervention, learning, and signed receipt.",
+      summary: "Track released commitments through accountable owner, milestones, leading signals, outcomes, customer effects, economics, risk, variance, intervention, learning, and receipt.",
+      trackSummary: "Released executive commitments now enter one accountability ledger where owners, milestones, leading signals, outcomes, customer effects, economics, risk, variance, intervention, learning, and consequences remain visible.",
+      stageSummary: "Released commitments now stay accountable through owner, milestones, leading signals, outcomes, customer effects, economics, risk, variance, intervention, learning, and receipt.",
+      openDecision: "Accept accountability posture",
+      guardedDecision: "Open guarded accountability",
+      holdDecision: "Hold outcome acceptance",
+      repairDecision: "Repair accountability proof",
+      nextOpen: "Accept the accountability posture and keep commitment, owner, milestones, outcomes, customer effects, economics, risk, variance, intervention, learning, and receipt together.",
+      nextGuarded: "Open guarded accountability while one bounded milestone, outcome, customer, economic, risk, intervention, or evidence condition stays watched.",
+      nextHold: "Hold outcome acceptance when ownership, milestones, evidence, customer effect, economics, risk, intervention, or learning do not reconcile.",
+      nextRepair: "Repair accountability proof before outcomes are claimed, rewards are assigned, commitments are renewed, or lessons influence other tenants.",
+      axes: [["Released commitment","reviewGuard",0.98,10,"Approved outcome, scope, baseline, target, timing, assumptions, boundaries, resources, risks, expiry, and release receipt remain linked."],["Accountable owner","ownerCommand",0.98,10,"One accountable executive, delivery owners, contributors, decision rights, escalation path, support, succession, and acceptance are current."],["Milestone and leading signal","supportGuard",0.96,10,"Milestones, leading indicators, thresholds, source, cadence, dependencies, variance, forecast, owner, and next decision are visible."],["Outcome and customer effect","tenantGuard",0.98,10,"Adoption, workflow change, accepted outcome, experience, trust, service, retention, expansion, harm, and customer evidence are linked."],["Economic and risk effect","sponsorGuard",0.98,10,"Revenue, cost, margin, cash, capacity, opportunity cost, exposure, controls, residual risk, and downside are reconciled."],["Variance and intervention","rollbackGuard",0.98,10,"Variance, cause, severity, trend, forecast, intervention, owner, authority, stop rule, escalation, and recovery status are explicit."],["Learning and consequence","proofGuard",0.98,10,"Evidence quality, attribution, counterfactual, lesson, decision change, product change, operating change, recognition, correction, and reuse boundary are recorded."],["Accountability receipt","guardClosure",0.99,10,"Signed receipt records status, evidence, outcome, customer effect, economics, risk, variance, intervention, learning, consequence, and next review."]],
     },
   );
   const BILLING_CURRENCY = "USD";
@@ -28917,6 +29067,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotOperatingOutcomeAccountabilityLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExecutiveCommitmentReleaseGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAnnualStrategyRenewalCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCapitalAndCapacityAllocationBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseOperatingScenarioSimulatorPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCeoOperatingPortfolioReviewPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegulatedMarketEntryCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseValueRealizationLedgerPreview(model, autopilot)}",
@@ -38487,6 +38642,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCeoOperatingPortfolioReviewPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "ceo-operating-portfolio-review");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseOperatingScenarioSimulatorSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "enterprise-operating-scenario-simulator");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseOperatingScenarioSimulator(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "enterprise-operating-scenario-simulator");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseOperatingScenarioSimulatorPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "enterprise-operating-scenario-simulator");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCapitalAndCapacityAllocationBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-capital-and-capacity-allocation-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCapitalAndCapacityAllocationBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-capital-and-capacity-allocation-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCapitalAndCapacityAllocationBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-capital-and-capacity-allocation-board");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAnnualStrategyRenewalCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "annual-strategy-renewal-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAnnualStrategyRenewalCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "annual-strategy-renewal-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAnnualStrategyRenewalCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "annual-strategy-renewal-council");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExecutiveCommitmentReleaseGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "executive-commitment-release-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExecutiveCommitmentReleaseGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "executive-commitment-release-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotExecutiveCommitmentReleaseGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "executive-commitment-release-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOperatingOutcomeAccountabilityLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "operating-outcome-accountability-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOperatingOutcomeAccountabilityLedger(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "operating-outcome-accountability-ledger");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotOperatingOutcomeAccountabilityLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "operating-outcome-accountability-ledger");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -103297,9 +103507,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1145", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Operating Scenario Simulator", "Compare growth, capacity, risk, market, product, service, and capital choices before executive commitments are released."],
-      ["v1146", "First Pilot Expansion Rollout Reuse Market Pilot Global Capital and Capacity Allocation Board", "Allocate people, platform, trust, service, partner, market, and cash capacity against verified value and downside."],
-      ["v1147", "First Pilot Expansion Rollout Reuse Market Pilot Annual Strategy Renewal Council", "Renew or retire strategic commitments using realized value, operating evidence, scenarios, risk appetite, and accountable receipts."],
+      ["v1150", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Portfolio Intervention Command", "Turn accountability variances into focused intervention decisions across value, customers, risk, product, capacity, organization, and capital."],
+      ["v1151", "First Pilot Expansion Rollout Reuse Market Pilot Global Execution Assurance Council", "Assure cross-market execution through milestone proof, dependency control, trust, capacity, recovery, and executive escalation."],
+      ["v1152", "First Pilot Expansion Rollout Reuse Market Pilot Strategy-to-Outcome Learning Network", "Return verified operating outcomes into tenant-safe strategic learning, decision quality, and next-cycle renewal."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

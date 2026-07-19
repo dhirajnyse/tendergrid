@@ -1,5 +1,119 @@
 # Changelog
 
+## v1149 - First Pilot Expansion Rollout Reuse Market Pilot Operating Outcome Accountability Ledger
+
+### Changes made
+- Added Operating Outcome Accountability Ledger as the next governed operating-execution room.
+- Added released commitment, accountable owner, milestone and leading signal, outcome and customer effect, economic and risk effect, variance and intervention, learning and consequence, accountability receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed local HTTP smoke checks for `/`, `app.min.js?v=1149.1`, and `styles.min.css?v=1149.1` with `200` responses.
+- Passed desktop visual and interaction QA at `1280x720`: Command, Build Phase, Autopilot, and Reports navigated without hangs; v1149 and the v1150-v1152 queue remained visible; no horizontal overflow or console errors appeared.
+- Passed mobile visual and interaction QA at `390x844` (375 px content width): Command, Build Phase, Autopilot, Reports, and the deferred build route remained responsive without horizontal overflow or console errors.
+- Passed the physical accountability-receipt copy interaction with visible confirmation in 667 ms on desktop and 758 ms on mobile, including the 250 ms observation pause.
+
+### Known risks
+- The ledger is an operating decision aid, not an employment performance record; outcome attribution, customer impact, economics, risk, and consequences require verified evidence and fair human review.
+
+## v1148 - First Pilot Expansion Rollout Reuse Market Pilot Executive Commitment Release Gate
+
+### Changes made
+- Added Executive Commitment Release Gate as the next governed operating-execution room.
+- Added commitment definition, evidence threshold, customer and market boundary, capacity and dependency, risk and downside, authority and dissent, communication and rollback, commitment release receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The release gate does not itself grant corporate authority or create a binding promise; real commitments require authorized approvals, verified resources, contracts, controls, and evidence.
+
+## v1147 - First Pilot Expansion Rollout Reuse Market Pilot Annual Strategy Renewal Council
+
+### Changes made
+- Added Annual Strategy Renewal Council as the next governed operating-execution room.
+- Added strategy thesis, realized value, customer and market evidence, product and AI evidence, risk and resilience, organization and capacity, capital and alternatives, strategy renewal receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Strategy renewal remains a decision aid until verified customer, market, operating, product, workforce, risk, legal, security, and financial evidence is approved by accountable leaders.
+
+## v1146 - First Pilot Expansion Rollout Reuse Market Pilot Global Capital and Capacity Allocation Board
+
+### Changes made
+- Added Global Capital and Capacity Allocation Board as the next governed operating-execution room.
+- Added customer value priority, market allocation, product and platform allocation, reliability and trust allocation, service and delivery allocation, people and partner allocation, cash and option reserve, allocation receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Allocation guidance does not reserve real budget or capacity; accountable finance, people, product, service, security, legal, and executive owners must approve production commitments.
+
+## v1145 - First Pilot Expansion Rollout Reuse Market Pilot Enterprise Operating Scenario Simulator
+
+### Changes made
+- Added Enterprise Operating Scenario Simulator as the next governed operating-execution room.
+- Added baseline and assumptions, growth scenario, capacity scenario, customer and market scenario, product and AI scenario, risk and resilience scenario, capital and stop rules, scenario decision receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Scenario comparisons remain illustrative until baselines, ranges, dependencies, financial assumptions, risk appetite, and accountable executive judgment are verified.
+
 ## v1144 - First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review
 
 ### Changes made

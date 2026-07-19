@@ -83,28 +83,28 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.min.css?v=1144.1"), "index.html is missing the v1139.1 minified CSS cache token.");
-assert(index.includes("data/sample-data.js?v=1144.1"), "index.html is missing the v1139.1 data cache token.");
-assert(index.includes("app.min.js?v=1144.1"), "index.html is missing the v1139.1 minified app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=1144.1"), "index.html is missing the v1139.1 icon cache token.");
+assert(index.includes("styles.min.css?v=1149.1"), "index.html is missing the v1149.1 minified CSS cache token.");
+assert(index.includes("data/sample-data.js?v=1149.1"), "index.html is missing the v1149.1 data cache token.");
+assert(index.includes("app.min.js?v=1149.1"), "index.html is missing the v1149.1 minified app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=1149.1"), "index.html is missing the v1149.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
 
 assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name.");
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
-assert(pkg.version === "11.4.4", "package.json has the wrong release version.");
+assert(pkg.version === "11.4.9", "package.json has the wrong release version.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v1144";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=1144.1'), "app.js is missing the v1139.1 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=1144.1'), "app.js is missing the v1139.1 3D logo cache token.");
-assert(appMin.includes("v1144"), "app.min.js is missing the v1144 build marker.");
-assert(appMin.includes("First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review"), "app.min.js is missing the v1144 build label.");
-assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-market-pilot-ceo-operating-portfolio-review"), "app.min.js is missing the v1144 copy action.");
-assert(appMin.includes("v1144 ceo operating portfolio review"), "app.min.js is missing the v1144 current Build Phase track.");
-assert(appMin.includes("v1145") && appMin.includes("v1146") && appMin.includes("v1147"), "app.min.js is missing the v1145-v1146-v1147 next queue.");
+assert(app.includes('const BUILD_VERSION = "v1149";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Operating Outcome Accountability Ledger";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=1149.1'), "app.js is missing the v1149.1 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=1149.1'), "app.js is missing the v1149.1 3D logo cache token.");
+assert(appMin.includes("v1149"), "app.min.js is missing the v1149 build marker.");
+assert(appMin.includes("First Pilot Expansion Rollout Reuse Market Pilot Operating Outcome Accountability Ledger"), "app.min.js is missing the v1149 build label.");
+assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-market-pilot-operating-outcome-accountability-ledger"), "app.min.js is missing the v1149 copy action.");
+assert(appMin.includes("v1149 operating outcome accountability ledger"), "app.min.js is missing the v1149 current Build Phase track.");
+assert(appMin.includes("v1150") && appMin.includes("v1151") && appMin.includes("v1152"), "app.min.js is missing the v1150-v1151-v1152 next queue.");
 assert(cssMin.includes("command-pilot-runway-stage"), "styles.min.css is missing the pilot runway stage class.");
 assert(cssMin.includes(".command-pilot-runway-stage-strip>button"), "styles.min.css is missing the compact runway strip action layout.");
 [
@@ -2202,6 +2202,11 @@ assert(app.includes("v804 first pilot expansion rollout reuse market pilot launc
   ["EnterpriseValueRealizationLedger", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Value Realization Ledger", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-value-realization-ledger", "Pilot enterprise value realization ledger", "v1142 enterprise value realization ledger", ["Value promise baseline","Workflow adoption","Outcome acceptance","Evidence and attribution","Economic realization","Renewal and expansion","Correction and learning","Realization receipt"]],
   ["RegulatedMarketEntryCouncil", "First Pilot Expansion Rollout Reuse Market Pilot Regulated Market Entry Council", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-regulated-market-entry-council", "Pilot regulated market entry council", "v1143 regulated market entry council", ["Market and sector scope","Entity and licensing","Data and privacy","Security and assurance","AI and model obligations","Commercial and tax","Operating readiness","Entry approval receipt"]],
   ["CeoOperatingPortfolioReview", "First Pilot Expansion Rollout Reuse Market Pilot CEO Operating Portfolio Review", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-ceo-operating-portfolio-review", "Pilot CEO operating portfolio review", "v1144 ceo operating portfolio review", ["Portfolio value","Customer and market health","Risk and resilience","Product and AI","Service and capacity","People, partners, and organization","Capital and scenarios","CEO decision receipt"]],
+  ["EnterpriseOperatingScenarioSimulator", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Operating Scenario Simulator", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-operating-scenario-simulator", "Pilot enterprise operating scenario simulator", "v1145 enterprise operating scenario simulator", ["Baseline and assumptions","Growth scenario","Capacity scenario","Customer and market scenario","Product and AI scenario","Risk and resilience scenario","Capital and stop rules","Scenario decision receipt"]],
+  ["GlobalCapitalAndCapacityAllocationBoard", "First Pilot Expansion Rollout Reuse Market Pilot Global Capital and Capacity Allocation Board", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-capital-and-capacity-allocation-board", "Pilot global capital and capacity allocation board", "v1146 global capital and capacity allocation board", ["Customer value priority","Market allocation","Product and platform allocation","Reliability and trust allocation","Service and delivery allocation","People and partner allocation","Cash and option reserve","Allocation receipt"]],
+  ["AnnualStrategyRenewalCouncil", "First Pilot Expansion Rollout Reuse Market Pilot Annual Strategy Renewal Council", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-annual-strategy-renewal-council", "Pilot annual strategy renewal council", "v1147 annual strategy renewal council", ["Strategy thesis","Realized value","Customer and market evidence","Product and AI evidence","Risk and resilience","Organization and capacity","Capital and alternatives","Strategy renewal receipt"]],
+  ["ExecutiveCommitmentReleaseGate", "First Pilot Expansion Rollout Reuse Market Pilot Executive Commitment Release Gate", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-executive-commitment-release-gate", "Pilot executive commitment release gate", "v1148 executive commitment release gate", ["Commitment definition","Evidence threshold","Customer and market boundary","Capacity and dependency","Risk and downside","Authority and dissent","Communication and rollback","Commitment release receipt"]],
+  ["OperatingOutcomeAccountabilityLedger", "First Pilot Expansion Rollout Reuse Market Pilot Operating Outcome Accountability Ledger", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-operating-outcome-accountability-ledger", "Pilot operating outcome accountability ledger", "v1149 operating outcome accountability ledger", ["Released commitment","Accountable owner","Milestone and leading signal","Outcome and customer effect","Economic and risk effect","Variance and intervention","Learning and consequence","Accountability receipt"]],
 ].forEach(([suffix, label, copyAction, signal, track, axes = []]) => {
   assert(app.includes(label), `${label} release label is missing.`);
   assert(app.includes(`function buildCommandFirstPilotExpansionRolloutReuseMarketPilot${suffix}Summary`), `${label} summary model is missing.`);
