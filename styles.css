@@ -95044,3 +95044,70 @@ body.serenity-mode {
     white-space: normal;
   }
 }
+
+
+/* v1114 runway strip readability */
+.command-pilot-runway-stage-strip {
+  grid-template-columns: minmax(250px, 0.9fr) minmax(0, 1.7fr);
+  align-items: start;
+}
+
+.command-pilot-runway-stage-strip > div:first-child {
+  min-width: 0;
+}
+
+.command-pilot-runway-stage-strip > div:first-child p {
+  margin: 0.45rem 0 0;
+  line-height: 1.45;
+}
+
+.command-pilot-runway-stage-strip-signals article {
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+  padding: 0 0.65rem;
+  border-left: 3px solid rgba(26, 128, 110, 0.28);
+}
+
+.command-pilot-runway-stage-strip-signals span,
+.command-pilot-runway-stage-strip-signals strong,
+.command-pilot-runway-stage-strip-signals small {
+  display: block;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.command-pilot-runway-stage-strip > button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  align-self: center;
+  width: auto;
+  min-height: 40px;
+}
+
+@media (max-width: 1100px) {
+  .command-pilot-runway-stage-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-pilot-runway-stage-strip-signals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .command-pilot-runway-stage-strip-signals {
+    grid-template-columns: 1fr;
+  }
+
+  .command-pilot-runway-stage-strip-signals article {
+    padding: 0.65rem 0;
+    border-top: 1px solid rgba(26, 128, 110, 0.2);
+    border-left: 0;
+  }
+
+  .command-pilot-runway-stage-strip > button {
+    justify-self: stretch;
+    width: 100%;
+  }
+}

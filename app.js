@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1109";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Customer Launch Authorization Board";
+  const BUILD_VERSION = "v1114";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Renewal Readiness Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1109.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1109.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1114.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1114.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -11932,6 +11932,201 @@
         ["Customer support", "sponsorGuard", 0.86, 7, "Onboarding, support, communications, and escalation are staffed."],
         ["Executive owner", "ownerCommand", 0.86, 7, "One executive owns launch decision and stop authority."],
         ["Launch authorization", "guardClosure", 0.9, 9, "Signed first-customer authorization closes the board."],
+      ],
+    },
+    {
+      key: "first-customer-production-launch-room",
+      version: "v1110",
+      number: 1110,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Customer Production Launch Room",
+      shortLabel: "First Customer Production Launch Room",
+      phase: "first customer production launch room",
+      track: "v1110 first customer production launch room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-production-launch-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-production-launch-room",
+      idSuffix: "FIRST-CUSTOMER-PRODUCTION-LAUNCH-ROOM",
+      scoreKey: "firstCustomerProductionLaunchRoomScore",
+      decisionKey: "firstCustomerProductionLaunchRoomDecision",
+      stateKey: "firstCustomerProductionLaunchRoomState",
+      lineKey: "firstCustomerProductionLaunchRoomLine",
+      primarySignal: "Pilot first customer production launch room",
+      primaryNote: "Operates the first live customer launch across go-time lock, data cutover, access activation, billing activation, live monitoring, customer support, rollback authority, and signed production launch receipt.",
+      summary: "Operate the first customer launch with go-time lock, migration, access, billing, monitoring, support, rollback authority, and signed production launch receipt.",
+      trackSummary: "Launch authorization now becomes a live production room across go-time, cutover, access, billing, monitoring, support, rollback authority, and signed receipt.",
+      stageSummary: "First customer production launch now has one operating room for go-time, cutover, access, billing, monitoring, support, rollback, and receipt.",
+      openDecision: "Open production launch",
+      guardedDecision: "Open guarded launch",
+      holdDecision: "Hold production launch",
+      repairDecision: "Repair launch receipt",
+      nextOpen: "Open the production launch and keep go-time, cutover, access, billing, monitoring, support, rollback authority, and signed receipt together.",
+      nextGuarded: "Open a guarded launch while one go-time, cutover, access, billing, monitoring, support, rollback, or receipt lane stays watched.",
+      nextHold: "Hold production launch until go-time, migration, access, billing, and monitoring evidence are clear.",
+      nextRepair: "Repair the production launch receipt before the reliability watch begins.",
+      axes: [
+        ["Go-time lock", "reviewGuard", 0.9, 9, "Window, owners, dependencies, stop rule, and customer notice are locked."],
+        ["Data cutover", "proofGuard", 0.9, 9, "Migration, reconciliation, freeze, and recovery proof remain readable."],
+        ["Access activation", "tenantGuard", 0.9, 9, "Named users receive tenant-scoped roles and verified sessions."],
+        ["Billing activation", "launchMoment", 0.88, 8, "Subscription, invoice, entitlement, and webhook state agree."],
+        ["Live monitoring", "supportGuard", 0.9, 9, "Service, data, access, billing, and audit signals are watched."],
+        ["Customer support", "sponsorGuard", 0.88, 8, "Customer contacts, support channel, escalation, and update cadence are active."],
+        ["Rollback authority", "rollbackGuard", 0.9, 9, "One owner can stop, roll back, and communicate within the agreed window."],
+        ["Launch receipt", "guardClosure", 0.92, 10, "Customer-safe production receipt records launch state and acceptance."],
+      ],
+    },
+    {
+      key: "post-launch-reliability-watch",
+      version: "v1111",
+      number: 1111,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Reliability Watch",
+      shortLabel: "Post-Launch Reliability Watch",
+      phase: "post launch reliability watch",
+      track: "v1111 post launch reliability watch",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-post-launch-reliability-watch",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-post-launch-reliability-watch",
+      idSuffix: "POST-LAUNCH-RELIABILITY-WATCH",
+      scoreKey: "postLaunchReliabilityWatchScore",
+      decisionKey: "postLaunchReliabilityWatchDecision",
+      stateKey: "postLaunchReliabilityWatchState",
+      lineKey: "postLaunchReliabilityWatchLine",
+      primarySignal: "Pilot post-launch reliability watch",
+      primaryNote: "Watches the first production period across service health, data integrity, access health, billing health, support demand, customer signals, incident posture, and signed reliability receipt.",
+      summary: "Watch the first production period across service health, data integrity, access, billing, support demand, customer signals, incident posture, and reliability receipt.",
+      trackSummary: "The production launch receipt now becomes an early-life reliability watch across service, data, access, billing, support, customer signal, incidents, and closure.",
+      stageSummary: "Post-launch reliability now has one watch for service, data, access, billing, support, customer signal, incidents, and receipt.",
+      openDecision: "Continue reliability watch",
+      guardedDecision: "Continue guarded service",
+      holdDecision: "Hold wider adoption",
+      repairDecision: "Repair reliability proof",
+      nextOpen: "Continue the reliability watch and keep service, data, access, billing, support, customer signal, incident posture, and receipt together.",
+      nextGuarded: "Continue guarded service while one reliability lane remains under an explicit owner and review time.",
+      nextHold: "Hold wider adoption until service, data, access, billing, and incident posture are stable.",
+      nextRepair: "Repair reliability evidence before adoption and value claims expand.",
+      axes: [
+        ["Service health", "supportGuard", 0.9, 9, "Availability, latency, error rate, jobs, and critical dependencies stay within target."],
+        ["Data integrity", "proofGuard", 0.9, 9, "Writes, reads, reconciliation, backup, and restore checks remain healthy."],
+        ["Access health", "tenantGuard", 0.88, 8, "Login, sessions, roles, tenant boundaries, and audit events remain correct."],
+        ["Billing health", "launchMoment", 0.86, 7, "Entitlements, invoices, webhooks, and subscription state continue to agree."],
+        ["Support demand", "ownerCommand", 0.86, 7, "Volume, severity, response time, owner load, and repeat issues are visible."],
+        ["Customer signal", "sponsorGuard", 0.86, 7, "Customer confidence, friction, feedback, and next update are captured."],
+        ["Incident posture", "rollbackGuard", 0.88, 8, "Open incidents, mitigations, rollback readiness, and learning actions are current."],
+        ["Reliability receipt", "guardClosure", 0.9, 9, "Signed watch receipt records health, exceptions, owners, and next review."],
+      ],
+    },
+    {
+      key: "customer-adoption-and-value-receipt",
+      version: "v1112",
+      number: 1112,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Adoption and Value Receipt",
+      shortLabel: "Customer Adoption and Value Receipt",
+      phase: "customer adoption and value receipt",
+      track: "v1112 customer adoption and value receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-adoption-and-value-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-adoption-and-value-receipt",
+      idSuffix: "CUSTOMER-ADOPTION-AND-VALUE-RECEIPT",
+      scoreKey: "customerAdoptionAndValueReceiptScore",
+      decisionKey: "customerAdoptionAndValueReceiptDecision",
+      stateKey: "customerAdoptionAndValueReceiptState",
+      lineKey: "customerAdoptionAndValueReceiptLine",
+      primarySignal: "Pilot customer adoption and value receipt",
+      primaryNote: "Connects first-customer use to active users, workflow movement, control quality, time saved, risk reduced, sponsor acceptance, renewal signal, and a signed value receipt.",
+      summary: "Capture first-customer adoption and value across active users, workflow movement, control quality, time saved, risk reduced, sponsor acceptance, renewal signal, and signed value receipt.",
+      trackSummary: "Reliability proof now becomes a customer value receipt across usage, workflow movement, control quality, time saved, risk reduced, sponsor acceptance, renewal signal, and closure.",
+      stageSummary: "Customer adoption now has one receipt connecting usage, workflow movement, controls, time, risk, sponsor acceptance, renewal signal, and proof.",
+      openDecision: "Accept customer value",
+      guardedDecision: "Accept guarded value",
+      holdDecision: "Hold value claim",
+      repairDecision: "Repair adoption proof",
+      nextOpen: "Accept the customer value receipt and keep active use, workflow movement, control quality, time saved, risk reduced, sponsor acceptance, renewal signal, and proof together.",
+      nextGuarded: "Accept guarded value while one adoption or outcome measure remains owned and time-bound.",
+      nextHold: "Hold the value claim until usage, workflow, control, and sponsor evidence are credible.",
+      nextRepair: "Repair adoption and value proof before the 30-day sponsor review.",
+      axes: [
+        ["Active users", "launchMoment", 0.84, 6, "Invited, activated, returning, and role-level user movement are visible."],
+        ["Workflow movement", "reviewGuard", 0.88, 8, "Tenders, projects, decisions, follow-ups, and closeouts move through the desk."],
+        ["Control quality", "proofGuard", 0.88, 8, "Owner, date, evidence, decision, and audit completeness improve."],
+        ["Time saved", "supportGuard", 0.84, 6, "Baseline and current effort support a conservative time-saved claim."],
+        ["Risk reduced", "rollbackGuard", 0.86, 7, "Overdue, missing-data, decision, and governance exposure are reduced."],
+        ["Sponsor acceptance", "sponsorGuard", 0.88, 8, "The sponsor accepts the measures, caveats, and business interpretation."],
+        ["Renewal signal", "ownerCommand", 0.82, 5, "Adoption and value indicate whether renewal confidence is forming."],
+        ["Value receipt", "guardClosure", 0.9, 9, "Signed receipt records outcomes, method, caveats, owner, and next review."],
+      ],
+    },
+    {
+      key: "customer-sponsor-30-day-review",
+      version: "v1113",
+      number: 1113,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Sponsor 30-Day Review",
+      shortLabel: "Customer Sponsor 30-Day Review",
+      phase: "customer sponsor 30 day review",
+      track: "v1113 customer sponsor 30 day review",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-sponsor-30-day-review",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-sponsor-30-day-review",
+      idSuffix: "CUSTOMER-SPONSOR-30-DAY-REVIEW",
+      scoreKey: "customerSponsor30DayReviewScore",
+      decisionKey: "customerSponsor30DayReviewDecision",
+      stateKey: "customerSponsor30DayReviewState",
+      lineKey: "customerSponsor30DayReviewLine",
+      primarySignal: "Pilot customer sponsor 30-day review",
+      primaryNote: "Brings outcomes, adoption, value, reliability, open risks, improvement commitments, sponsor decision, and a signed 30-day review receipt into one management room.",
+      summary: "Run the 30-day sponsor review across outcomes, adoption, value, reliability, open risks, improvement plan, sponsor decision, and signed review receipt.",
+      trackSummary: "The value receipt now becomes a sponsor review across outcomes, adoption, value, reliability, open risks, improvement commitments, decision, and receipt.",
+      stageSummary: "The 30-day sponsor review now connects outcomes, adoption, value, reliability, risks, improvement plan, decision, and signed receipt.",
+      openDecision: "Approve 30-day review",
+      guardedDecision: "Approve guarded review",
+      holdDecision: "Hold sponsor decision",
+      repairDecision: "Repair review evidence",
+      nextOpen: "Approve the 30-day review and keep outcomes, adoption, value, reliability, risks, improvement commitments, sponsor decision, and receipt together.",
+      nextGuarded: "Approve a guarded review while one outcome, adoption, reliability, risk, or commitment remains watched.",
+      nextHold: "Hold the sponsor decision until outcome, reliability, risk, and ownership evidence are decision-ready.",
+      nextRepair: "Repair sponsor-review evidence before renewal readiness is assessed.",
+      axes: [
+        ["Outcome summary", "reviewGuard", 0.88, 8, "The review opens with the few outcomes that matter, their method, and caveats."],
+        ["Adoption evidence", "launchMoment", 0.86, 7, "Role-level use and workflow movement show how the product is actually used."],
+        ["Value evidence", "proofGuard", 0.88, 8, "Time, control, risk, and management-readiness evidence support the value claim."],
+        ["Reliability evidence", "supportGuard", 0.88, 8, "Service, data, access, billing, support, and incident posture are summarized."],
+        ["Open risks", "rollbackGuard", 0.86, 7, "Every unresolved risk has impact, mitigation, owner, date, and escalation path."],
+        ["Improvement plan", "ownerCommand", 0.86, 7, "Product, data, training, support, and adoption commitments have owners and dates."],
+        ["Sponsor decision", "sponsorGuard", 0.9, 9, "The sponsor records continue, correct, expand, or hold with explicit conditions."],
+        ["Review receipt", "guardClosure", 0.9, 9, "Signed receipt captures decisions, actions, acceptance, and next review."],
+      ],
+    },
+    {
+      key: "first-renewal-readiness-gate",
+      version: "v1114",
+      number: 1114,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Renewal Readiness Gate",
+      shortLabel: "First Renewal Readiness Gate",
+      phase: "first renewal readiness gate",
+      track: "v1114 first renewal readiness gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-renewal-readiness-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-renewal-readiness-gate",
+      idSuffix: "FIRST-RENEWAL-READINESS-GATE",
+      scoreKey: "firstRenewalReadinessGateScore",
+      decisionKey: "firstRenewalReadinessGateDecision",
+      stateKey: "firstRenewalReadinessGateState",
+      lineKey: "firstRenewalReadinessGateLine",
+      primarySignal: "Pilot first renewal readiness gate",
+      primaryNote: "Tests renewal posture across contract status, adoption proof, value proof, service health, sponsor confidence, commercial posture, renewal ownership, and signed readiness receipt.",
+      summary: "Assess first renewal readiness across contract status, adoption proof, value proof, service health, sponsor confidence, commercial posture, renewal owner, and signed receipt.",
+      trackSummary: "The 30-day sponsor review now becomes an honest renewal gate across contract, adoption, value, service, sponsor confidence, commercial posture, owner, and receipt.",
+      stageSummary: "First renewal readiness now has one gate for contract, adoption, value, service, sponsor confidence, commercial posture, owner, and signed receipt.",
+      openDecision: "Open renewal motion",
+      guardedDecision: "Open guarded renewal",
+      holdDecision: "Hold renewal claim",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open the renewal motion and keep contract, adoption, value, service health, sponsor confidence, commercial posture, owner, and signed receipt together.",
+      nextGuarded: "Open a guarded renewal while one commercial, adoption, value, service, sponsor, or evidence lane stays watched.",
+      nextHold: "Hold the renewal claim until contract, value, service, and sponsor posture are decision-ready.",
+      nextRepair: "Repair renewal evidence before the customer renewal decision room convenes.",
+      axes: [
+        ["Contract status", "reviewGuard", 0.86, 7, "Term, notice window, scope, price, obligations, and exceptions are current."],
+        ["Adoption proof", "launchMoment", 0.88, 8, "Active roles and critical workflows show sustained, useful adoption."],
+        ["Value proof", "proofGuard", 0.9, 9, "Accepted outcomes, method, caveats, and customer evidence are readable."],
+        ["Service health", "supportGuard", 0.88, 8, "Reliability, support, incidents, security, and recovery remain within promise."],
+        ["Sponsor confidence", "sponsorGuard", 0.88, 8, "Sponsor sentiment, risks, priorities, and renewal conditions are explicit."],
+        ["Commercial posture", "ownerCommand", 0.86, 7, "Price, scope, concession boundaries, procurement path, and decision dates are known."],
+        ["Renewal owner", "tenantGuard", 0.86, 7, "One owner coordinates customer, commercial, product, service, and approval lanes."],
+        ["Readiness receipt", "guardClosure", 0.9, 9, "Signed receipt records readiness, gaps, owners, dates, and next decision."],
       ],
     },
   );
@@ -27552,6 +27747,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstRenewalReadinessGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSponsor30DayReviewPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAdoptionAndValueReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchReliabilityWatchPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerProductionLaunchRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerLaunchAuthorizationBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentAndRollbackExercisePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstTenantCutoverRehearsalPreview(model, autopilot)}",
@@ -36690,6 +36890,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerLaunchAuthorizationBoardPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-launch-authorization-board");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerProductionLaunchRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-customer-production-launch-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerProductionLaunchRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-customer-production-launch-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerProductionLaunchRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-production-launch-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchReliabilityWatchSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "post-launch-reliability-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchReliabilityWatch(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "post-launch-reliability-watch");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchReliabilityWatchPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "post-launch-reliability-watch");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAdoptionAndValueReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-adoption-and-value-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAdoptionAndValueReceipt(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-adoption-and-value-receipt");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerAdoptionAndValueReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-adoption-and-value-receipt");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSponsor30DayReviewSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-sponsor-30-day-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSponsor30DayReview(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-sponsor-30-day-review");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSponsor30DayReviewPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-sponsor-30-day-review");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstRenewalReadinessGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-renewal-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstRenewalReadinessGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-renewal-readiness-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstRenewalReadinessGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-renewal-readiness-gate");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -101500,9 +101755,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1110", "First Pilot Expansion Rollout Reuse Market Pilot First Customer Production Launch Room", "Operate the first customer launch with go-time lock, migration, access, billing, monitoring, support, rollback authority, and signed production launch receipt."],
-      ["v1111", "First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Reliability Watch", "Watch the first production period across service health, data integrity, access, billing, support demand, customer signals, incident posture, and reliability receipt."],
-      ["v1112", "First Pilot Expansion Rollout Reuse Market Pilot Customer Adoption and Value Receipt", "Capture first-customer adoption and value across active users, workflow movement, control quality, time saved, risk reduced, sponsor acceptance, renewal signal, and signed value receipt."],
+      ["v1115", "First Pilot Expansion Rollout Reuse Market Pilot First Customer Renewal Decision Room", "Decide the first customer renewal across evidence, commercial terms, sponsor intent, service commitments, approvals, negotiation boundaries, close plan, and signed decision receipt."],
+      ["v1116", "First Pilot Expansion Rollout Reuse Market Pilot Customer Expansion Opportunity Board", "Qualify customer expansion across new users, workflows, business units, value cases, service capacity, commercial shape, decision ownership, and signed opportunity receipt."],
+      ["v1117", "First Pilot Expansion Rollout Reuse Market Pilot Reference Customer Approval Gate", "Approve reference use across customer consent, proof boundaries, claim accuracy, privacy, review rights, channel scope, owner, and signed reference receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
@@ -155637,8 +155892,10 @@ const state = {
     const pilotRunwayCopyRelease = PILOT_REUSE_MARKET_RUNWAY_RELEASES.find((release) => release.copyAction === action);
     if (pilotRunwayCopyRelease) {
       const encoded = button.dataset.copyText || "";
-      const fallback = buildCommandPilotRunwayStage(buildCommandCenterModel(), buildPursuitAutopilotModel(), pilotRunwayCopyRelease.key).copyText || "";
-      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, `${pilotRunwayCopyRelease.shortLabel} copied.`);
+      const copyText = encoded
+        ? decodeCopyPayload(encoded)
+        : buildCommandPilotRunwayStage(buildCommandCenterModel(), buildPursuitAutopilotModel(), pilotRunwayCopyRelease.key).copyText || "";
+      copyTextToClipboard(copyText, `${pilotRunwayCopyRelease.shortLabel} copied.`);
       return;
     }
     if (action === "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-guard") {

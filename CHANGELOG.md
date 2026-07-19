@@ -1,5 +1,122 @@
 # Changelog
 
+## v1114 - First Pilot Expansion Rollout Reuse Market Pilot First Renewal Readiness Gate
+
+### Changes made
+- Added First Renewal Readiness Gate as the next first-customer lifecycle room.
+- Added contract status, adoption proof, value proof, service health, sponsor confidence, commercial posture, renewal owner, readiness receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+- Made release-receipt copying use its embedded payload first, avoiding expensive Command and Autopilot model rebuilds during normal clicks.
+- Reworked the Command runway strip into readable desktop, tablet, and mobile grids with a compact, stable copy action.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+- `styles.css`
+- `styles.min.css`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed `git diff --check` and HTTP smoke at `http://127.0.0.1:4177/` with the `v1114.1` assets.
+- Passed in-app browser QA for Build Phase and Command at desktop and 390 px mobile widths with no horizontal overflow or console errors.
+- Passed physical renewal-receipt copy tests in 375 ms on desktop and 385 ms on mobile without page unresponsiveness.
+
+### Known risks
+- Renewal readiness is a static decision aid until live contract, usage, billing, service, customer, and commercial evidence is integrated and validated.
+
+## v1113 - First Pilot Expansion Rollout Reuse Market Pilot Customer Sponsor 30-Day Review
+
+### Changes made
+- Added Customer Sponsor 30-Day Review as the next first-customer lifecycle room.
+- Added outcome summary, adoption evidence, value evidence, reliability evidence, open risks, improvement plan, sponsor decision, review receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The review room structures evidence but cannot replace real customer participation, verified outcome data, accountable commitments, or sponsor approval.
+
+## v1112 - First Pilot Expansion Rollout Reuse Market Pilot Customer Adoption and Value Receipt
+
+### Changes made
+- Added Customer Adoption and Value Receipt as the next first-customer lifecycle room.
+- Added active users, workflow movement, control quality, time saved, risk reduced, sponsor acceptance, renewal signal, value receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Value evidence remains illustrative until production analytics, agreed baselines, customer validation, and finance-safe benefit calculations are connected.
+
+## v1111 - First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Reliability Watch
+
+### Changes made
+- Added Post-Launch Reliability Watch as the next first-customer lifecycle room.
+- Added service health, data integrity, access health, billing health, support demand, customer signal, incident posture, reliability receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Reliability posture is modelled from static evidence; production use still needs live telemetry, alert routing, incident tooling, on-call ownership, and customer communication integrations.
+
+## v1110 - First Pilot Expansion Rollout Reuse Market Pilot First Customer Production Launch Room
+
+### Changes made
+- Added First Customer Production Launch Room as the next first-customer lifecycle room.
+- Added go-time lock, data cutover, access activation, billing activation, live monitoring, customer support, rollback authority, launch receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The static room models launch control, but a real production launch still requires provisioned infrastructure, provider credentials, persistent data, verified integrations, and an accountable operating team.
+
 ## v1109 - First Pilot Expansion Rollout Reuse Market Pilot First Customer Launch Authorization Board
 
 ### Changes made
