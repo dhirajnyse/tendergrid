@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1089";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Control Room";
+  const BUILD_VERSION = "v1094";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Economics Review Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1089.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1089.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1094.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1094.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -11152,6 +11152,201 @@
         ["Retention signal", "reviewGuard", 0.82, 5, "Retention signal has an owner and date."],
         ["Learning quality", "tenantGuard", 0.82, 5, "Learning quality respects tenant boundaries."],
         ["Metrics receipt", "guardClosure", 0.84, 6, "Signed metrics receipt closes the room."],
+      ],
+    },
+    {
+      key: "paid-customer-renewal-watch-room",
+      version: "v1090",
+      number: 1090,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Paid Customer Renewal Watch Room",
+      shortLabel: "Paid Customer Renewal Watch Room",
+      phase: "paid customer renewal watch room",
+      track: "v1090 paid customer renewal watch room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-paid-customer-renewal-watch-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-paid-customer-renewal-watch-room",
+      idSuffix: "PAID-CUSTOMER-RENEWAL-WATCH-ROOM",
+      scoreKey: "paidCustomerRenewalWatchRoomScore",
+      decisionKey: "paidCustomerRenewalWatchRoomDecision",
+      stateKey: "paidCustomerRenewalWatchRoomState",
+      lineKey: "paidCustomerRenewalWatchRoomLine",
+      primarySignal: "Pilot paid customer renewal watch room",
+      primaryNote: "Watches paid-customer renewal intent with outcome proof, adoption health, sponsor response, support posture, value continuity, risk owner, renewal date, and decision receipt.",
+      summary: "Watch paid-customer renewal intent with outcome proof, adoption health, sponsor response, support posture, value continuity, risk owner, renewal date, and decision receipt.",
+      trackSummary: "Launch metrics now become renewal control across outcome proof, adoption, sponsor response, support, value, risk owner, renewal date, and decision receipt.",
+      stageSummary: "Paid customer renewal now has outcome, adoption, sponsor, support, value, risk-owner, date, and decision-receipt controls.",
+      openDecision: "Open renewal watch",
+      guardedDecision: "Open guarded renewal",
+      holdDecision: "Hold renewal ask",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open paid customer renewal watch and keep outcome proof, adoption, sponsor response, support, value, risk owner, renewal date, and receipt together.",
+      nextGuarded: "Open guarded renewal watch while one outcome, adoption, sponsor, support, value, risk, date, or receipt lane stays watched.",
+      nextHold: "Hold the renewal ask until outcome proof, adoption health, sponsor response, and value continuity are clear.",
+      nextRepair: "Repair renewal proof before partner enablement widens the launch story.",
+      axes: [
+        ["Outcome proof", "proofGuard", 0.84, 6, "Customer outcome proof is attached."],
+        ["Adoption health", "reviewGuard", 0.82, 5, "Adoption health has a review rhythm."],
+        ["Sponsor response", "sponsorGuard", 0.82, 5, "Sponsor response is current."],
+        ["Support posture", "supportGuard", 0.82, 5, "Support posture is calm and owned."],
+        ["Value continuity", "proofGuard", 0.82, 5, "Value continuity is evidenced."],
+        ["Risk owner", "ownerCommand", 0.82, 5, "Renewal risk has one owner."],
+        ["Renewal date", "reviewGuard", 0.8, 5, "Renewal date is visible."],
+        ["Decision receipt", "guardClosure", 0.84, 6, "Decision receipt closes the watch."],
+      ],
+    },
+    {
+      key: "launch-partner-enablement-kit",
+      version: "v1091",
+      number: 1091,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Partner Enablement Kit",
+      shortLabel: "Launch Partner Enablement Kit",
+      phase: "launch partner enablement kit",
+      track: "v1091 launch partner enablement kit",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-partner-enablement-kit",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-partner-enablement-kit",
+      idSuffix: "LAUNCH-PARTNER-ENABLEMENT-KIT",
+      scoreKey: "launchPartnerEnablementKitScore",
+      decisionKey: "launchPartnerEnablementKitDecision",
+      stateKey: "launchPartnerEnablementKitState",
+      lineKey: "launchPartnerEnablementKitLine",
+      primarySignal: "Pilot launch partner enablement kit",
+      primaryNote: "Prepares a controlled partner kit with positioning, demo path, proof boundary, pricing guard, referral route, support promise, accountable owner, and enablement receipt.",
+      summary: "Prepare a controlled launch-partner kit with positioning, demo path, proof boundary, pricing guard, referral route, support promise, owner, and enablement receipt.",
+      trackSummary: "Renewal proof now becomes partner enablement across positioning, demo, proof boundary, pricing, referral, support, ownership, and receipt.",
+      stageSummary: "Launch partner enablement now has positioning, demo, proof-boundary, pricing, referral, support, owner, and receipt controls.",
+      openDecision: "Open partner enablement",
+      guardedDecision: "Open guarded enablement",
+      holdDecision: "Hold partner launch",
+      repairDecision: "Repair partner proof",
+      nextOpen: "Open the launch partner kit and keep positioning, demo path, proof boundary, pricing guard, referral route, support promise, owner, and receipt together.",
+      nextGuarded: "Open guarded partner enablement while one positioning, demo, proof, pricing, referral, support, owner, or receipt lane stays watched.",
+      nextHold: "Hold partner launch until positioning, demo proof, pricing guard, and support promise are clear.",
+      nextRepair: "Repair partner enablement proof before the production support rhythm is widened.",
+      axes: [
+        ["Positioning", "sponsorGuard", 0.82, 5, "Partner positioning is precise."],
+        ["Demo path", "proofGuard", 0.84, 6, "Partner demo path uses approved proof."],
+        ["Proof boundary", "tenantGuard", 0.84, 6, "Customer and tenant boundaries are explicit."],
+        ["Pricing guard", "sponsorGuard", 0.82, 5, "Pricing guard prevents ad hoc promises."],
+        ["Referral route", "reviewGuard", 0.82, 5, "Referral route has a clear handoff."],
+        ["Support promise", "supportGuard", 0.82, 5, "Support promise is realistic."],
+        ["Partner owner", "ownerCommand", 0.82, 5, "One partner owner is accountable."],
+        ["Enablement receipt", "guardClosure", 0.84, 6, "Enablement receipt closes the kit."],
+      ],
+    },
+    {
+      key: "production-support-rhythm-console",
+      version: "v1092",
+      number: 1092,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Support Rhythm Console",
+      shortLabel: "Production Support Rhythm Console",
+      phase: "production support rhythm console",
+      track: "v1092 production support rhythm console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-support-rhythm-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-support-rhythm-console",
+      idSuffix: "PRODUCTION-SUPPORT-RHYTHM-CONSOLE",
+      scoreKey: "productionSupportRhythmConsoleScore",
+      decisionKey: "productionSupportRhythmConsoleDecision",
+      stateKey: "productionSupportRhythmConsoleState",
+      lineKey: "productionSupportRhythmConsoleLine",
+      primarySignal: "Pilot production support rhythm console",
+      primaryNote: "Establishes the production support rhythm with intake, triage, severity, response owner, response promise, resolution proof, learning handoff, and operating receipt.",
+      summary: "Establish the production support rhythm with intake, triage, severity, owner, response promise, resolution proof, learning handoff, and operating receipt.",
+      trackSummary: "Partner enablement now becomes production support rhythm across intake, triage, severity, owner, response, resolution, learning, and receipt.",
+      stageSummary: "Production support rhythm now has intake, triage, severity, owner, response, resolution, learning, and receipt controls.",
+      openDecision: "Open support rhythm",
+      guardedDecision: "Open guarded support",
+      holdDecision: "Hold support expansion",
+      repairDecision: "Repair support proof",
+      nextOpen: "Open production support rhythm and keep intake, triage, severity, owner, response promise, resolution proof, learning handoff, and receipt together.",
+      nextGuarded: "Open guarded support rhythm while one intake, triage, severity, owner, response, resolution, learning, or receipt lane stays watched.",
+      nextHold: "Hold support expansion until intake, severity, response ownership, and resolution proof are clear.",
+      nextRepair: "Repair production support proof before public trust answers are approved.",
+      axes: [
+        ["Intake route", "launchMoment", 0.82, 5, "Support intake has one visible route."],
+        ["Triage rule", "reviewGuard", 0.82, 5, "Triage rule creates a calm queue."],
+        ["Severity model", "rollbackGuard", 0.82, 5, "Severity model protects urgent work."],
+        ["Response owner", "ownerCommand", 0.84, 6, "Every support case has an owner."],
+        ["Response promise", "supportGuard", 0.84, 6, "Response promise is realistic."],
+        ["Resolution proof", "proofGuard", 0.82, 5, "Resolution proof closes the case."],
+        ["Learning handoff", "tenantGuard", 0.82, 5, "Learning handoff protects tenant boundaries."],
+        ["Operating receipt", "guardClosure", 0.84, 6, "Operating receipt closes the rhythm."],
+      ],
+    },
+    {
+      key: "product-trust-center-publication-gate",
+      version: "v1093",
+      number: 1093,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Product Trust Center Publication Gate",
+      shortLabel: "Product Trust Center Publication Gate",
+      phase: "product trust center publication gate",
+      track: "v1093 product trust center publication gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-product-trust-center-publication-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-product-trust-center-publication-gate",
+      idSuffix: "PRODUCT-TRUST-CENTER-PUBLICATION-GATE",
+      scoreKey: "productTrustCenterPublicationGateScore",
+      decisionKey: "productTrustCenterPublicationGateDecision",
+      stateKey: "productTrustCenterPublicationGateState",
+      lineKey: "productTrustCenterPublicationGateLine",
+      primarySignal: "Pilot product trust center publication gate",
+      primaryNote: "Approves customer-facing trust content with security answers, privacy boundary, data-handling proof, availability language, incident language, compliance evidence, publication owner, and approval receipt.",
+      summary: "Approve customer-facing trust content with security, privacy, data handling, availability, incidents, compliance evidence, publication owner, and approval receipt.",
+      trackSummary: "Production support proof now becomes trust-center publication across security, privacy, data, availability, incidents, compliance, ownership, and approval receipt.",
+      stageSummary: "Trust-center publication now has security, privacy, data, availability, incident, compliance, owner, and approval controls.",
+      openDecision: "Authorize trust publication",
+      guardedDecision: "Authorize guarded publication",
+      holdDecision: "Hold trust publication",
+      repairDecision: "Repair publication proof",
+      nextOpen: "Authorize trust-center publication and keep security, privacy, data handling, availability, incident, compliance, owner, and approval receipt together.",
+      nextGuarded: "Authorize guarded trust publication while one security, privacy, data, availability, incident, compliance, owner, or receipt lane stays watched.",
+      nextHold: "Hold trust publication until security answers, privacy boundary, data handling, and incident language are clear.",
+      nextRepair: "Repair publication proof before launch economics are presented to the board.",
+      axes: [
+        ["Security answers", "tenantGuard", 0.84, 6, "Security answers are customer-safe."],
+        ["Privacy boundary", "tenantGuard", 0.84, 6, "Privacy boundary is explicit."],
+        ["Data-handling proof", "proofGuard", 0.84, 6, "Data-handling claims have proof."],
+        ["Availability language", "supportGuard", 0.82, 5, "Availability language is honest."],
+        ["Incident language", "supportGuard", 0.82, 5, "Incident language matches the support rhythm."],
+        ["Compliance evidence", "proofGuard", 0.82, 5, "Compliance evidence is approved."],
+        ["Publication owner", "ownerCommand", 0.82, 5, "One publication owner is accountable."],
+        ["Approval receipt", "guardClosure", 0.84, 6, "Approval receipt closes the gate."],
+      ],
+    },
+    {
+      key: "launch-economics-review-board",
+      version: "v1094",
+      number: 1094,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Economics Review Board",
+      shortLabel: "Launch Economics Review Board",
+      phase: "launch economics review board",
+      track: "v1094 launch economics review board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-economics-review-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-economics-review-board",
+      idSuffix: "LAUNCH-ECONOMICS-REVIEW-BOARD",
+      scoreKey: "launchEconomicsReviewBoardScore",
+      decisionKey: "launchEconomicsReviewBoardDecision",
+      stateKey: "launchEconomicsReviewBoardState",
+      lineKey: "launchEconomicsReviewBoardLine",
+      primarySignal: "Pilot launch economics review board",
+      primaryNote: "Reviews launch economics with revenue proof, acquisition cost, delivery cost, gross margin, retention outlook, expansion capacity, accountable owner, and signed board receipt.",
+      summary: "Review launch economics with revenue proof, acquisition cost, delivery cost, gross margin, retention outlook, expansion capacity, owner, and signed receipt.",
+      trackSummary: "Published trust proof now becomes launch economics across revenue, acquisition, delivery, margin, retention, capacity, ownership, and board receipt.",
+      stageSummary: "Launch economics now has revenue, acquisition-cost, delivery-cost, margin, retention, capacity, owner, and board-receipt controls.",
+      openDecision: "Approve economic expansion",
+      guardedDecision: "Approve guarded economics",
+      holdDecision: "Hold expansion spend",
+      repairDecision: "Repair economics proof",
+      nextOpen: "Approve economic expansion and keep revenue, acquisition cost, delivery cost, gross margin, retention, capacity, owner, and signed board receipt together.",
+      nextGuarded: "Approve guarded economics while one revenue, acquisition, delivery, margin, retention, capacity, owner, or receipt lane stays watched.",
+      nextHold: "Hold expansion spend until revenue proof, acquisition cost, delivery cost, and retention outlook are clear.",
+      nextRepair: "Repair launch economics before customer reference proof is requested.",
+      axes: [
+        ["Revenue proof", "sponsorGuard", 0.84, 6, "Revenue proof is attached."],
+        ["Acquisition cost", "proofGuard", 0.82, 5, "Acquisition cost has a credible basis."],
+        ["Delivery cost", "supportGuard", 0.82, 5, "Delivery and support cost are visible."],
+        ["Gross margin", "proofGuard", 0.84, 6, "Gross margin uses consistent inputs."],
+        ["Retention outlook", "reviewGuard", 0.82, 5, "Retention outlook follows customer evidence."],
+        ["Expansion capacity", "rollbackGuard", 0.82, 5, "Capacity risk and fallback are visible."],
+        ["Economics owner", "ownerCommand", 0.82, 5, "One economics owner is accountable."],
+        ["Board receipt", "guardClosure", 0.84, 6, "Signed board receipt closes the review."],
       ],
     },
   );
@@ -26772,6 +26967,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchEconomicsReviewBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterPublicationGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportRhythmConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPartnerEnablementKitPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerRenewalWatchRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsControlRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerSuccessPlaybookPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderSalesMotionConsolePreview(model, autopilot)}",
@@ -35670,6 +35870,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsControlRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-metrics-control-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerRenewalWatchRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "paid-customer-renewal-watch-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerRenewalWatchRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "paid-customer-renewal-watch-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerRenewalWatchRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "paid-customer-renewal-watch-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPartnerEnablementKitSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-partner-enablement-kit");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPartnerEnablementKit(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-partner-enablement-kit");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPartnerEnablementKitPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-partner-enablement-kit");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportRhythmConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-support-rhythm-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportRhythmConsole(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-support-rhythm-console");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportRhythmConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-support-rhythm-console");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterPublicationGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "product-trust-center-publication-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterPublicationGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "product-trust-center-publication-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterPublicationGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "product-trust-center-publication-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchEconomicsReviewBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-economics-review-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchEconomicsReviewBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-economics-review-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchEconomicsReviewBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-economics-review-board");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -100480,9 +100735,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1090", "First Pilot Expansion Rollout Reuse Market Pilot Paid Customer Renewal Watch Room", "Watch paid-customer renewal intent with outcome proof, adoption health, sponsor response, support posture, value continuity, risk owner, renewal date, and decision receipt."],
-      ["v1091", "First Pilot Expansion Rollout Reuse Market Pilot Launch Partner Enablement Kit", "Prepare a controlled launch-partner kit with positioning, demo path, proof boundary, pricing guard, referral route, support promise, owner, and enablement receipt."],
-      ["v1092", "First Pilot Expansion Rollout Reuse Market Pilot Production Support Rhythm Console", "Establish the production support rhythm with intake, triage, severity, owner, response promise, resolution proof, learning handoff, and operating receipt."],
+      ["v1095", "First Pilot Expansion Rollout Reuse Market Pilot Paid Customer Reference Consent Room", "Convert customer success into consented reference proof with approved story, privacy boundary, quote permission, evidence links, channel scope, expiry date, owner, and consent receipt."],
+      ["v1096", "First Pilot Expansion Rollout Reuse Market Pilot Launch Portfolio Health Board", "Compare live customer health across adoption, value, support, renewal, revenue, risk, owner load, and portfolio decision receipt."],
+      ["v1097", "First Pilot Expansion Rollout Reuse Market Pilot Expansion Capacity Gate", "Gate expansion against sales capacity, onboarding capacity, support capacity, infrastructure posture, partner readiness, cash guard, owner, and approval receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
