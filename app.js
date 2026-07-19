@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1129";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Go/No-Go Council";
+  const BUILD_VERSION = "v1134";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Board-Level Growth and Risk Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1129.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1129.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1134.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1134.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -12712,6 +12712,201 @@
         ["Trust and transparency","proofGuard",0.96,10,"Capabilities, limits, evidence, AI use, data practices, status, corrections, complaints, and opt-outs are clear."],
         ["Launch authority","sponsorGuard",0.98,10,"Named product, security, privacy, operations, finance, legal, support, and executive authorities sign."],
         ["Go/no-go receipt","guardClosure",0.98,10,"Signed receipt records decision, blockers, exceptions, evidence, owners, dates, rollback, and next council."],
+      ],
+    },
+    {
+      key: "public-launch-operations-command",
+      version: "v1130",
+      number: 1130,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Operations Command",
+      shortLabel: "Public Launch Operations Command",
+      phase: "public launch operations command",
+      track: "v1130 public launch operations command",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-operations-command",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-operations-command",
+      idSuffix: "PUBLIC-LAUNCH-OPERATIONS-COMMAND",
+      scoreKey: "publicLaunchOperationsCommandScore",
+      decisionKey: "publicLaunchOperationsCommandDecision",
+      stateKey: "publicLaunchOperationsCommandState",
+      lineKey: "publicLaunchOperationsCommandLine",
+      primarySignal: "Pilot public launch operations command",
+      primaryNote: "Operates launch day across availability, demand, incidents, communications, support, billing, authority, rollback, and signed launch receipt.",
+      summary: "Operate public launch across availability, traffic, incidents, customer communications, support, billing, authority, rollback, and signed receipt.",
+      trackSummary: "Launch authorization now becomes one calm operations command where live signals, customer impact, response authority, commercial continuity, and rollback stay readable.",
+      stageSummary: "Public launch operations now have one command from live service watch through incident response, customer communication, rollback, and receipt.",
+      openDecision: "Authorize launch operations",
+      guardedDecision: "Open guarded launch operations",
+      holdDecision: "Pause public launch",
+      repairDecision: "Invoke launch rollback",
+      nextOpen: "Authorize launch operations and keep availability, demand, incidents, communications, support, billing, authority, rollback, and receipt together.",
+      nextGuarded: "Open guarded launch operations while one contained service, customer, support, billing, communication, or recovery condition stays watched.",
+      nextHold: "Pause public launch when customer impact, safety, privacy, payment, support, evidence, or response authority is not controlled.",
+      nextRepair: "Invoke rollback when the approved recovery threshold is crossed and preserve the decision, evidence, communication, and restoration receipt.",
+      axes: [
+        ["Live availability","launchMoment",0.96,10,"SLOs, health checks, latency, errors, dependencies, regions, jobs, and customer-critical workflows stay visible."],
+        ["Traffic and demand","reviewGuard",0.92,9,"Signup, login, import, workflow, export, queue, capacity, abuse, and demand signals have thresholds and owners."],
+        ["Incident command","rollbackGuard",0.96,10,"Severity, commander, responders, timeline, evidence, containment, recovery, and review route are explicit."],
+        ["Customer communications","proofGuard",0.92,9,"Status, impact, workaround, expectation, correction, resolution, audience, and approval remain accurate and timed."],
+        ["Support readiness","supportGuard",0.94,10,"Channels, hours, triage, knowledge, escalation, customer context, language, and staffing match the launch promise."],
+        ["Billing operations","ownerCommand",0.92,9,"Signup, entitlement, invoice, tax, payment, failure, refund, credit, and reconciliation remain controlled."],
+        ["Rollback authority","sponsorGuard",0.98,10,"Named product, engineering, security, operations, support, commercial, and executive authorities can pause or roll back."],
+        ["Launch receipt","guardClosure",0.98,10,"Signed receipt records service state, incidents, customers, communications, decisions, owners, evidence, and next review."],
+      ],
+    },
+    {
+      key: "first-100-customers-capacity-board",
+      version: "v1131",
+      number: 1131,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First 100 Customers Capacity Board",
+      shortLabel: "First 100 Customers Capacity Board",
+      phase: "first 100 customers capacity board",
+      track: "v1131 first 100 customers capacity board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-100-customers-capacity-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-100-customers-capacity-board",
+      idSuffix: "FIRST-100-CUSTOMERS-CAPACITY-BOARD",
+      scoreKey: "first100CustomersCapacityBoardScore",
+      decisionKey: "first100CustomersCapacityBoardDecision",
+      stateKey: "first100CustomersCapacityBoardState",
+      lineKey: "first100CustomersCapacityBoardLine",
+      primarySignal: "Pilot first 100 customers capacity board",
+      primaryNote: "Governs early scale across demand, onboarding, infrastructure, security review, support, customer success, staffing, economics, and signed capacity receipt.",
+      summary: "Govern the first 100 customers across demand, onboarding, infrastructure, security, support, success, staffing, economics, and signed capacity receipt.",
+      trackSummary: "Launch operations now feed a capacity board that protects customer experience and unit economics while the first hundred customer relationships are accepted deliberately.",
+      stageSummary: "Early customer scale now has one capacity board for demand, onboarding, platform headroom, trust reviews, service, staffing, economics, and receipt.",
+      openDecision: "Authorize customer cohort",
+      guardedDecision: "Open guarded customer cohort",
+      holdDecision: "Hold new customer intake",
+      repairDecision: "Repair capacity proof",
+      nextOpen: "Authorize the next customer cohort and keep demand, onboarding, infrastructure, security, support, success, staffing, economics, and receipt together.",
+      nextGuarded: "Open a guarded cohort while one bounded onboarding, capacity, security, service, staffing, or economic condition stays watched.",
+      nextHold: "Hold new customer intake when the next cohort would weaken reliability, security, implementation quality, support, outcomes, or sustainable economics.",
+      nextRepair: "Repair capacity proof before sales promises, onboarding dates, service levels, integrations, or expansion commitments increase load.",
+      axes: [
+        ["Demand intake","reviewGuard",0.9,9,"Qualified demand, segment, urgency, fit, complexity, region, procurement, and expected value are visible."],
+        ["Onboarding throughput","launchMoment",0.94,10,"Discovery, data preparation, configuration, access, training, acceptance, handoff, and cycle time have capacity."],
+        ["Infrastructure headroom","rollbackGuard",0.96,10,"Compute, storage, database, queue, network, backup, restore, observability, and regional headroom meet thresholds."],
+        ["Security review capacity","tenantGuard",0.94,10,"Questionnaires, evidence, architecture, privacy, testing, remediation, contracts, and approvals have owners and time."],
+        ["Support coverage","supportGuard",0.94,10,"Ticket load, severity mix, response, resolution, knowledge, language, region, and escalation capacity are sustainable."],
+        ["Customer success capacity","ownerCommand",0.92,9,"Adoption, outcome review, sponsor rhythm, risk recovery, renewal, expansion, references, and portfolio load are balanced."],
+        ["Staffing and unit economics","sponsorGuard",0.94,10,"Skills, hiring, partners, utilization, gross margin, acquisition, implementation, support, and cash exposure are honest."],
+        ["Capacity receipt","guardClosure",0.96,10,"Signed receipt records cohort, assumptions, limits, commitments, exceptions, owners, evidence, expiry, and next gate."],
+      ],
+    },
+    {
+      key: "global-compliance-and-trust-passport",
+      version: "v1132",
+      number: 1132,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Compliance and Trust Passport",
+      shortLabel: "Global Compliance and Trust Passport",
+      phase: "global compliance and trust passport",
+      track: "v1132 global compliance and trust passport",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-compliance-and-trust-passport",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-compliance-and-trust-passport",
+      idSuffix: "GLOBAL-COMPLIANCE-AND-TRUST-PASSPORT",
+      scoreKey: "globalComplianceAndTrustPassportScore",
+      decisionKey: "globalComplianceAndTrustPassportDecision",
+      stateKey: "globalComplianceAndTrustPassportState",
+      lineKey: "globalComplianceAndTrustPassportLine",
+      primarySignal: "Pilot global compliance and trust passport",
+      primaryNote: "Packages reusable trust evidence across identity, data, security, privacy, AI, accessibility, regulatory mapping, audit, expiry, and signed passport receipt.",
+      summary: "Package global trust evidence across identity, data, security, privacy, AI, accessibility, regulation, audit, expiry, and signed passport receipt.",
+      trackSummary: "Early-scale capacity now gains a portable trust passport that keeps regional obligations, customer evidence, control ownership, expiry, exceptions, and verification together.",
+      stageSummary: "Global customer trust now has one passport for identity, data, security, privacy, AI, accessibility, obligations, audit evidence, and receipt.",
+      openDecision: "Authorize trust passport",
+      guardedDecision: "Open guarded trust passport",
+      holdDecision: "Hold passport reuse",
+      repairDecision: "Repair trust evidence",
+      nextOpen: "Authorize the trust passport and keep identity, data, security, privacy, AI, accessibility, obligations, audit, expiry, and receipt together.",
+      nextGuarded: "Open a guarded passport while one bounded, disclosed, owned, customer-accepted control or evidence condition stays watched.",
+      nextHold: "Hold passport reuse until regional applicability, evidence freshness, customer scope, exceptions, owners, and verification are explicit.",
+      nextRepair: "Repair trust evidence before a control, certification, legal posture, accessibility claim, AI safeguard, or customer assurance is reused.",
+      axes: [
+        ["Identity and access","tenantGuard",0.96,10,"Authentication, authorization, least privilege, administration, session, review, revoke, and audit evidence are current."],
+        ["Data residency and privacy","tenantGuard",0.98,10,"Location, purpose, consent, minimization, retention, deletion, transfer, rights, and processor evidence are mapped."],
+        ["Security assurance","proofGuard",0.96,10,"Architecture, encryption, vulnerabilities, testing, logging, incidents, suppliers, recovery, and remediation are evidenced."],
+        ["AI governance","reviewGuard",0.94,10,"Use cases, data, evaluation, uncertainty, human control, fairness, monitoring, incidents, and rollback are governed."],
+        ["Accessibility and inclusion","supportGuard",0.92,9,"Standards, keyboard, contrast, screen readers, language, cognitive load, testing, exceptions, and fixes are visible."],
+        ["Contract and regulatory mapping","ownerCommand",0.94,10,"Customer terms, sectors, countries, regulators, controls, evidence, exceptions, owners, and review dates align."],
+        ["Audit evidence","sponsorGuard",0.96,10,"Source, owner, verifier, scope, version, date, expiry, exception, correction, and retrieval remain traceable."],
+        ["Trust passport receipt","guardClosure",0.98,10,"Signed receipt records scope, regions, controls, evidence, exceptions, owners, expiry, verification, and reuse authority."],
+      ],
+    },
+    {
+      key: "adaptive-customer-value-network",
+      version: "v1133",
+      number: 1133,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Adaptive Customer Value Network",
+      shortLabel: "Adaptive Customer Value Network",
+      phase: "adaptive customer value network",
+      track: "v1133 adaptive customer value network",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-adaptive-customer-value-network",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-adaptive-customer-value-network",
+      idSuffix: "ADAPTIVE-CUSTOMER-VALUE-NETWORK",
+      scoreKey: "adaptiveCustomerValueNetworkScore",
+      decisionKey: "adaptiveCustomerValueNetworkDecision",
+      stateKey: "adaptiveCustomerValueNetworkState",
+      lineKey: "adaptiveCustomerValueNetworkLine",
+      primarySignal: "Pilot adaptive customer value network",
+      primaryNote: "Connects tenant-safe outcomes to relevant guidance, value opportunities, human prioritization, reversible experiments, benefit return, and signed value-network receipt.",
+      summary: "Connect tenant-safe outcomes to relevant guidance, value opportunities, human priority, reversible experiments, benefit return, and signed network receipt.",
+      trackSummary: "Portable trust evidence now supports an adaptive value network where customer outcomes improve guidance without exposing tenant data or removing human authority.",
+      stageSummary: "Customer value learning now has one tenant-safe network from outcome signals through relevant guidance, human choice, experiments, benefit return, and receipt.",
+      openDecision: "Authorize value guidance",
+      guardedDecision: "Open guarded value guidance",
+      holdDecision: "Hold network influence",
+      repairDecision: "Repair outcome proof",
+      nextOpen: "Authorize value guidance and keep outcome signals, tenant-safe learning, relevance, opportunity, human priority, experiment, benefit return, and receipt together.",
+      nextGuarded: "Open guarded value guidance while one privacy, relevance, confidence, customer-fit, experiment, outcome, or fairness condition stays watched.",
+      nextHold: "Hold network influence until data rights, tenant boundaries, evidence quality, relevance, human authority, rollback, and benefit return are decision-ready.",
+      nextRepair: "Repair outcome proof before one customer observation changes another customer's guidance, priority, experiment, commercial action, or product promise.",
+      axes: [
+        ["Outcome signal","proofGuard",0.94,10,"Customer objective, baseline, action, evidence, outcome, confidence, caveat, consent, and timing are readable."],
+        ["Tenant-safe learning","tenantGuard",0.98,10,"Consent, minimization, isolation, aggregation, anonymization, regional rule, revocation, and deletion protect customers."],
+        ["Recommendation relevance","reviewGuard",0.92,9,"Context, similarity, differences, constraints, confidence, explanation, stale evidence, and non-fit remain visible."],
+        ["Value opportunity","launchMoment",0.9,9,"Expected outcome, customer priority, effort, dependency, timing, risk, evidence, and non-action cost are balanced."],
+        ["Human prioritization","ownerCommand",0.96,10,"Named users can accept, edit, defer, reject, localize, constrain, or stop every recommendation."],
+        ["Experiment and rollback","rollbackGuard",0.94,10,"Hypothesis, scope, baseline, exposure, guardrail, measurement, stop rule, rollback, and review are explicit."],
+        ["Benefit return","supportGuard",0.92,9,"Useful learning returns to contributing customers through transparent, bounded, relevant, and supportable improvements."],
+        ["Value network receipt","guardClosure",0.96,10,"Signed receipt records source class, boundary, guidance, decision, experiment, outcome, benefit, owner, and review."],
+      ],
+    },
+    {
+      key: "board-level-growth-and-risk-council",
+      version: "v1134",
+      number: 1134,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Board-Level Growth and Risk Council",
+      shortLabel: "Board-Level Growth and Risk Council",
+      phase: "board level growth and risk council",
+      track: "v1134 board level growth and risk council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-board-level-growth-and-risk-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-board-level-growth-and-risk-council",
+      idSuffix: "BOARD-LEVEL-GROWTH-AND-RISK-COUNCIL",
+      scoreKey: "boardLevelGrowthAndRiskCouncilScore",
+      decisionKey: "boardLevelGrowthAndRiskCouncilDecision",
+      stateKey: "boardLevelGrowthAndRiskCouncilState",
+      lineKey: "boardLevelGrowthAndRiskCouncilLine",
+      primarySignal: "Pilot board level growth and risk council",
+      primaryNote: "Combines growth quality, revenue durability, concentration, delivery capacity, product and AI risk, security and compliance, investment, authority, and signed board receipt.",
+      summary: "Govern board decisions across growth quality, revenue durability, concentration, capacity, product and AI risk, trust, investment, and signed receipt.",
+      trackSummary: "Adaptive customer value now reaches a board-level council where growth, durability, concentration, capacity, product and AI risk, trust, and investment are reviewed together.",
+      stageSummary: "Enterprise growth now has one board council that balances customer value, durable economics, delivery capacity, trust, risk appetite, investment, and receipt.",
+      openDecision: "Authorize growth posture",
+      guardedDecision: "Open guarded growth posture",
+      holdDecision: "Hold growth commitment",
+      repairDecision: "Repair board evidence",
+      nextOpen: "Authorize the growth posture and keep growth quality, revenue durability, concentration, capacity, product and AI risk, trust, investment, and receipt together.",
+      nextGuarded: "Open a guarded growth posture while one bounded customer, revenue, capacity, trust, risk, or investment condition stays watched.",
+      nextHold: "Hold growth commitments when demand outruns customer value, reliable delivery, security, compliance, support, cash, evidence, or accountable authority.",
+      nextRepair: "Repair board evidence before forecasts, capital allocation, market entry, hiring, pricing, product scope, or public claims are approved.",
+      axes: [
+        ["Growth quality","launchMoment",0.92,9,"Demand, fit, activation, accepted value, retention, expansion, references, pricing power, and acquisition quality align."],
+        ["Revenue durability","proofGuard",0.94,10,"Recurring revenue, backlog, collection, renewal, expansion, margin, cash, forecast confidence, and downside are clear."],
+        ["Customer concentration","reviewGuard",0.92,9,"Revenue, value, sector, geography, dependency, renewal, implementation, support, and reference concentration are visible."],
+        ["Delivery capacity","ownerCommand",0.92,9,"Platform, implementation, security, support, success, product, people, partners, and leadership capacity match commitments."],
+        ["Product and AI risk","rollbackGuard",0.94,10,"Quality, roadmap, technical debt, model behavior, data, fairness, monitoring, incidents, and rollback stay governed."],
+        ["Security, compliance, and trust","tenantGuard",0.96,10,"Identity, privacy, resilience, regulation, accessibility, evidence, audit, customer assurance, and exceptions are current."],
+        ["Capital and investment","sponsorGuard",0.94,10,"Runway, hiring, infrastructure, market entry, product bets, risk reduction, returns, scenarios, and authority align."],
+        ["Board decision receipt","guardClosure",0.98,10,"Signed receipt records posture, assumptions, evidence, dissent, limits, owners, investments, expiry, and next council."],
       ],
     },
   );
@@ -28332,6 +28527,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLevelGrowthAndRiskCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAdaptiveCustomerValueNetworkPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalComplianceAndTrustPassportPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirst100CustomersCapacityBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchOperationsCommandPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchGoNoGoCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAiGuidanceSafetyAndTrustCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeBasedCommercialModelBoardPreview(model, autopilot)}",
@@ -37713,6 +37913,66 @@ const state = {
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchGoNoGoCouncilPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "public-launch-go-no-go-council");
   }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchOperationsCommandSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "public-launch-operations-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchOperationsCommand(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "public-launch-operations-command");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchOperationsCommandPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "public-launch-operations-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirst100CustomersCapacityBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-100-customers-capacity-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirst100CustomersCapacityBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-100-customers-capacity-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirst100CustomersCapacityBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-100-customers-capacity-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalComplianceAndTrustPassportSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-compliance-and-trust-passport");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalComplianceAndTrustPassport(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-compliance-and-trust-passport");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalComplianceAndTrustPassportPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-compliance-and-trust-passport");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAdaptiveCustomerValueNetworkSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "adaptive-customer-value-network");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAdaptiveCustomerValueNetwork(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "adaptive-customer-value-network");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAdaptiveCustomerValueNetworkPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "adaptive-customer-value-network");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLevelGrowthAndRiskCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "board-level-growth-and-risk-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLevelGrowthAndRiskCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "board-level-growth-and-risk-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBoardLevelGrowthAndRiskCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "board-level-growth-and-risk-council");
+  }
+
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
@@ -102522,9 +102782,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1130", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Operations Command", "Operate launch day across availability, traffic, incidents, support, customer communications, billing, authority, rollback, and signed launch receipt."],
-      ["v1131", "First Pilot Expansion Rollout Reuse Market Pilot First 100 Customers Capacity Board", "Govern early scale across demand, onboarding, service, security, success, infrastructure, economics, staffing, and signed capacity receipt."],
-      ["v1132", "First Pilot Expansion Rollout Reuse Market Pilot Global Compliance and Trust Passport", "Package regional controls across identity, data, security, privacy, AI, accessibility, evidence, audit, and signed trust passport."],
+      ["v1135", "First Pilot Expansion Rollout Reuse Market Pilot Partner Ecosystem Launch Exchange", "Govern partner referrals, delivery roles, customer boundaries, commercial terms, support, evidence, risk, and signed ecosystem receipt."],
+      ["v1136", "First Pilot Expansion Rollout Reuse Market Pilot Global Service Reliability Council", "Govern service reliability across SLOs, regions, dependencies, incidents, recovery, customer impact, investment, and signed reliability receipt."],
+      ["v1137", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Procurement Acceleration Room", "Accelerate enterprise buying across requirements, security, privacy, legal, commercial, implementation, approvals, and signed procurement receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
